@@ -27,7 +27,7 @@ plan: check-access check-secret
 
 create: check-access check-secret
 	@echo 安装v2ray服务器
-	terraform apply \
+	terraform apply -auto-approve \
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
@@ -46,7 +46,7 @@ state-list:
 
 destroy:
 	@echo 销毁v2ray服务器
-	terraform destroy \
+	terraform destroy -auto-approve \
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
