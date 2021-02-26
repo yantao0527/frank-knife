@@ -95,6 +95,7 @@ data "alicloud_images" "default" {
 
 # INSTANCE TYPE
 data "alicloud_instance_types" "c1g1" {
+  instance_type_family = "ecs.t5"
   cpu_core_count = 1
   memory_size    = 1
 }
