@@ -95,7 +95,7 @@ data "alicloud_images" "default" {
 
 # INSTANCE TYPE
 data "alicloud_instance_types" "c1g1" {
-  cpu_core_count = 2
+  cpu_core_count = 1
   memory_size    = 1
 }
 
