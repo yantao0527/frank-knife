@@ -1,0 +1,4 @@
+v2ray/.terraform/
+v2ray/terraform.tfstate*
+v2ray/remote.sh
+v2ray/playbook.sh

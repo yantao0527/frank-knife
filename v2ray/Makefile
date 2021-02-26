@@ -1,0 +1,52 @@
+check-access:
+ifndef ALICLOUD_ACCESS_KEY
+	$(error 请执行 source ../base/env.sh 或手动配置 ALICLOUD_ACCESS_KEY)
+endif
+
+check-secret:
+ifndef ALICLOUD_SECRET_KEY
+	$(error 请执行 source ../base/env.sh 或手动配置 ALICLOUD_SECRET_KEY)
+endif
+
+check: check-access check-secret
+	@echo 检查环境是否满足
+	terraform version
+	ansible-playbook --version
+
+init:
+	terraform init
+
+validate:
+	terraform validate
+
+plan: check-access check-secret
+	terraform plan \
+	  --var home=$(HOME) \
+	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
+	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+
+create: check-access check-secret
+	@echo 安装v2ray服务器
+	terraform apply \
+	  --var home=$(HOME) \
+	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
+	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+
+tf-cmd:
+	@terraform output -raw cmd_$(CMD)
+	@echo
+
+post-create:
+	@echo '生成脚本: remote.sh, playbook.sh'
+	@echo 'CMD=remote $(MAKE) tf-cmd > remote.sh'
+	@echo 'CMD=playbook $(MAKE) tf-cmd > playbook.sh'
+
+state-list:
+	terraform state list
+
+destroy:
+	@echo 销毁v2ray服务器
+	terraform destroy \
+	  --var home=$(HOME) \
+	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
+	  --var secret_key=$(ALICLOUD_SECRET_KEY)

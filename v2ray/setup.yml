@@ -1,0 +1,13 @@
+- name: "自动化配置"
+  hosts: all
+  remote_user: root
+  vars:
+    sshdconfig: /etc/ssh/sshd_config
+  tasks:
+  - name: "保持远程连接不断开"
+    lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveInterval' line='ClientAliveInterval 60'
+  - lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveCountMax' line='ClientAliveCountMax 30'
+
+  - name: "reload sshd service"
+    service: name=sshd state=reloaded
+
