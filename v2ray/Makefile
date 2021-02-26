@@ -33,7 +33,7 @@ create: check-access check-secret
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
 tf-cmd:
-	@terraform output -raw cmd_$(CMD)
+	@terraform output cmd_$(CMD)
 	@echo
 
 post-create:
