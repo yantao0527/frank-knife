@@ -34,3 +34,18 @@
       name: v2ray
       enabled: yes
       state: started
+
+  - name: set net.core.default_qdisc = fq
+    sysctl:
+      name: net.core.default_qdisc
+      value: fq
+      state: present
+      reload: no
+  - name: set net.ipv4.tcp_congestion_control = bbr
+    sysctl:
+      name: net.ipv4.tcp_congestion_control
+      value: bbr
+      state: present
+      reload: yes
+
+  

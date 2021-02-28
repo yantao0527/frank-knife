@@ -88,7 +88,7 @@ resource "alicloud_security_group_rule" "accept_v2ray_rule" {
 
 # OS IMAGE
 data "alicloud_images" "default" {
-  name_regex  = "^centos"
+  name_regex  = "^centos_8"
   most_recent = true
   owners      = "system"
 }

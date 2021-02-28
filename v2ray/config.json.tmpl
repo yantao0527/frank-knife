@@ -1,68 +1,36 @@
 {
-    "log": {
-        "error": "/var/log/v2ray/error.log",
-        "loglevel": "info"
-    },
-    "outbounds": [
+  "log": {
+    "error": "/var/log/v2ray/error.log",
+    "loglevel": "warning"
+  },
+  "inbounds": [{
+    "port": {{ v2ray_port }},
+    "protocol": "vmess",
+    "settings": {
+      "clients": [
         {
-            "protocol": "vmess",
-            "settings": {
-                "vnext": [
-                    {
-                        "address": "{{ v2ray_address }}",
-                        "port": {{v2ray_port}},
-                        "users": [
-                            {
-                                "id": "{{ v2ray_userid }}",
-                                "alterId": 64,
-                                "security": "auto"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "mux": {
-                "enabled": true
-            }
-        },
-        {
-            "protocol": "freedom",
-            "settings": {},
-            "tag": "direct"
+          "id": "{{ v2ray_userid }}",
+          "level": 1,
+          "alterId": 64
         }
-    ],
-    "inbounds": [
-        {
-            "port": 10808,
-            "protocol": "socks",
-            "settings": {
-                "auth": "noauth"
-            }
-        },
-        {
-            "port": 10809,
-            "protocol": "http",
-            "settings": {
-                "auth": "noauth"
-            }
-        }
-    ],
-    "routing": {
-        "domainStrategy": "IPOnDemand",
-        "rules": [
-            {
-                "type": "field",
-                "outboundTag": "direct",
-                "domain": ["geosite:cn"]
-              },
-              {
-                  "type": "field",
-                  "outboundTag": "direct",
-                  "ip": [
-                      "geoip:cn",
-                      "geoip:private"
-                  ]
-              }
-         ]
+      ]
     }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "blocked"
+      }
+    ]
+  }
 }
