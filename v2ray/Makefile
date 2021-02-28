@@ -8,7 +8,17 @@ ifndef ALICLOUD_SECRET_KEY
 	$(error 请执行 source ../base/env.sh 或手动配置 ALICLOUD_SECRET_KEY)
 endif
 
-check: check-access check-secret
+check-id_rsa:
+ifneq ($(shell test -e $(HOME)/.ssh/id_rsa && echo -n yes), yes)
+	$(error 请配置 $(HOME)/.ssh/id_rsa)
+endif
+
+check-id_rsa-pub:
+ifneq ($(shell test -e $(HOME)/.ssh/id_rsa.pub && echo -n yes), yes)
+	$(error 请配置 $(HOME)/.ssh/id_rsa.pub)
+endif
+
+check: check-id_rsa check-id_rsa-pub check-access check-secret
 	@echo 检查环境是否满足
 	terraform version
 	ansible-playbook --version
@@ -33,7 +43,7 @@ create: check-access check-secret
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
 tf-cmd:
-	@terraform output cmd_$(CMD)
+	@terraform output -raw cmd_$(CMD)
 	@echo
 
 post-create:
