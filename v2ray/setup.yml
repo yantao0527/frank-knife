@@ -3,9 +3,6 @@
   remote_user: root
   vars:
     sshdconfig: /etc/ssh/sshd_config
-    v2ray_address: 0.0.0.0
-    v2ray_port: 19327
-    v2ray_userid: 02072033-6842-4105-84ea-40f19b93de4f
   tasks:
   - name: "保持远程连接不断开"
     lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveInterval' line='ClientAliveInterval 60'

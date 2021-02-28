@@ -33,3 +33,16 @@ variable "vsw_1_cidr" {
 
 }
 
+# v2ray
+
+variable "v2ray_port" {
+
+}
+
+variable "v2ray_userid" {
+
+}
+
+variable "v2ray_alterId" {
+
+}

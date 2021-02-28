@@ -78,7 +78,7 @@ resource "alicloud_security_group_rule" "accept_v2ray_rule" {
   type              = "ingress"
   ip_protocol       = "tcp"
   policy            = "accept"
-  port_range        = "19327/19327"
+  port_range        = "${var.v2ray_port}/${var.v2ray_port}"
   priority          = 100
   security_group_id = alicloud_security_group.group.id
   cidr_ip           = "0.0.0.0/0"
@@ -161,6 +161,9 @@ locals {
         -i '${alicloud_eip.eip.ip_address},' \
         -u root \
         --private-key ${var.home}/.ssh/id_rsa \
+        --extra-vars v2ray_port=${var.v2ray_port} \
+        --extra-vars v2ray_userid=${var.v2ray_userid} \
+        --extra-vars v2ray_alterId=${var.v2ray_alterId} \
         setup.yml
   EOT  
 }

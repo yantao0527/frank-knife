@@ -42,15 +42,6 @@ create: check-access check-secret
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
-tf-cmd:
-	@terraform output -raw cmd_$(CMD)
-	@echo
-
-post-create:
-	@echo '生成脚本: remote.sh, playbook.sh'
-	@echo 'CMD=remote $(MAKE) tf-cmd > remote.sh'
-	@echo 'CMD=playbook $(MAKE) tf-cmd > playbook.sh'
-
 state-list:
 	terraform state list
 
@@ -60,3 +51,14 @@ destroy:
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+
+remote:
+	terraform output -raw cmd_remote > remote.sh
+	chmod 0755 remote.sh
+
+playbook:
+	terraform output -raw cmd_playbook > playbook.sh
+	chmod 0755 playbook.sh
+
+client:
+	terraform output -raw v2ray_client
