@@ -114,6 +114,7 @@ resource "alicloud_instance" "compute" {
   tags                 = {
     from = "frank-knife"
   }
+  status               = var.compute_status
 
   internet_max_bandwidth_out = 0
 }

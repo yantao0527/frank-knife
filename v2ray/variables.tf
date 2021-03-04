@@ -46,3 +46,10 @@ variable "v2ray_userid" {
 variable "v2ray_alterId" {
 
 }
+
+# compute instance
+
+variable "compute_status" {
+  description = "compute status[ running | stopped ]"
+  type  = string
+}

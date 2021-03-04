@@ -40,7 +40,22 @@ create: check-access check-secret
 	terraform apply -auto-approve \
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
-	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
+	  --var compute_status=Running
+
+vm-start: check-access check-secret
+	terraform apply -auto-approve \
+	  --var home=$(HOME) \
+	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
+	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
+	  --var compute_status=Running
+
+vm-stop: check-access check-secret
+	terraform apply -auto-approve \
+	  --var home=$(HOME) \
+	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
+	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
+	  --var compute_status=Stopped
 
 state-list:
 	terraform state list
@@ -50,15 +65,24 @@ destroy:
 	terraform destroy -auto-approve \
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
-	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
+	  --var compute_status=Stopped
+
+#TERRAFORM_OUTPUT=terraform output -raw
+TERRAFORM_OUTPUT=terraform output
 
 remote:
-	terraform output -raw cmd_remote > remote.sh
+	$(TERRAFORM_OUTPUT) cmd_remote > remote.sh
 	chmod 0755 remote.sh
 
 playbook:
-	terraform output -raw cmd_playbook > playbook.sh
+	$(TERRAFORM_OUTPUT) cmd_playbook > playbook.sh
 	chmod 0755 playbook.sh
 
 client:
-	terraform output -raw v2ray_client
+	$(TERRAFORM_OUTPUT) v2ray_client
+
+clean:
+	rm -rf .terraform
+	rm -f playbook.sh remote.sh
+	rm -f terraform.tfstate*
