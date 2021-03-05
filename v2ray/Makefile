@@ -68,7 +68,6 @@ destroy:
 	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
 	  --var compute_status=Stopped
 
-#TERRAFORM_OUTPUT=terraform output -raw
 TERRAFORM_OUTPUT=terraform output
 
 remote:
@@ -86,3 +85,14 @@ clean:
 	rm -rf .terraform
 	rm -f playbook.sh remote.sh
 	rm -f terraform.tfstate*
+
+## For terraform version v0.14
+TERRAFORM_OUTPUT2=terraform output -raw
+remote2:
+	$(TERRAFORM_OUTPUT2) cmd_remote > remote.sh
+	chmod 0755 remote.sh
+
+playbook2:
+	$(TERRAFORM_OUTPUT2) cmd_playbook > playbook.sh
+	chmod 0755 playbook.sh
+
