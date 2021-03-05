@@ -2,21 +2,19 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/alicloud" {
-  version     = "1.64.0"
-  constraints = "1.64.0, ~> 1.64"
+  version     = "1.116.0"
+  constraints = "~> 1.116"
   hashes = [
-    "h1:IC+/N3IFTX/ESN1BCFq4BdB630loCctt19iEFmfJod0=",
-    "zh:19b40bf11cb01f9721d480e1baaeb0838eeafcd02bd4be232185eeb9bb6d8709",
-    "zh:3385fde92df174eadd0df36ccd9b8e73a1618c7170abfc218be317e97e498967",
-    "zh:35fa632fe14481497d942a7a149cbbd48669d1dec7a02ea4e528b79a65dc1fdb",
-    "zh:52f2daceadb09fb09f17513b804ab232b16998c2cb0134842fd15e6d52e7456c",
-    "zh:5512fa88c6957179deb512316f336bd16abfc835d9c017cd31fa4c431b1d1a24",
-    "zh:5af25f520e0254579a424950cf4150fd54749e02cde271c43f7a802375e8656e",
-    "zh:6ff10ef0e8d6acad30d5bcd01b63823f5d23b57865f7d6df206d18d3fa3d75ae",
-    "zh:8c37c9e18becfff34e2a8e228908cd2d6c9dee16d2fc3e61f4647f53d6584180",
-    "zh:ae294756d19a790eb0528959d01aacfa8d1cbe35d0725bb0e67f9f416af4e2db",
-    "zh:c056d4123f751eb7ba8e6efc65811e3a36e48002f374ade6c63155f764f4a21b",
-    "zh:e57eb119ab8222c9c7ef1bdf1970ea342555407a9e80d252d1260c1d101cae34",
-    "zh:eb557a208eb9b8df172360596a68a04768019ccc5ceffbe6027822da6f524144",
+    "h1:36dG717eIm8OA+E+RCRW4YVGh3SnnOtJk+eKGGMTQtg=",
+    "zh:18e1aa5cb91f8ac4e9bcb5b0d0ca364cba5120d076999a091dacfeabfc46eed8",
+    "zh:2b98b1a021fbfea01721a29f4d3844777b3476b0e613529ed941d2916ed1ebf9",
+    "zh:310f57db6aee6d57d2045343dda025348dbb07a0f2120de568d1cfa8f8e093b9",
+    "zh:342ad476b9efbe558948d59b3eabd53e7e6d72610d724abe293bf2de90042595",
+    "zh:45ac906680aeecf695a2470ece61bffc54677281c5b340a0bf020c10f2026d79",
+    "zh:46cb295a4fea2344e7a4ee599fbda20c48d4fbe84f7afdf35d68fd4ee20b9595",
+    "zh:5cb2f30ff854fbb706ce04c3d672c111e9d6615d9140d3f15611d9ccc24b63e7",
+    "zh:e46722f78191edfc5689b09284579a9f994ca2deb7a01ec80ed0550081703ab8",
+    "zh:fd61eae6b3c3622e603cebf1b21bd8a76b209b74c6f21f43f7071afae945ae1c",
+    "zh:ffe886b25455abb448174d539cdf100ae32ff586f56f699689ce842d01a9df8f",
   ]
 }

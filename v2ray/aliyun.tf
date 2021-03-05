@@ -1,5 +1,5 @@
 provider "alicloud" {
-#  version    = "1.64"
+  version    = "~> 1.116"
   access_key = var.access_key
   secret_key = var.secret_key
   region     = var.region
