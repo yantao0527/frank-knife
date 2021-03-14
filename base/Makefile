@@ -19,6 +19,9 @@ mirror-aliyun:
 	#mkdir $(HOME)/.pip
 	#cp pip.conf $(HOME)/.pip/pip.conf
 
+install-utils:
+	sudo apt install unzip
+
 install-ansible:
 	sudo apt install python3-pip
 	sudo pip3 install ansible -i https://mirrors.aliyun.com/pypi/simple/
@@ -47,3 +50,8 @@ install-jx:
 	tar xvfz /tmp/jx-cli-linux-amd64.tar.gz -C /tmp
 	sudo mv /tmp/jx /usr/local/bin/jx
 	sudo chmod 0755 /usr/local/bin/jx
+
+install-terraform:
+	wget --output-document=/tmp/terraform_0.14.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.14.7/terraform_0.14.7_linux_amd64.zip
+	cd /tmp && unzip terraform_0.14.7_linux_amd64.zip
+	sudo mv /tmp/terraform /usr/local/bin/terraform
