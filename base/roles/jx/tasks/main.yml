@@ -1,0 +1,19 @@
+---
+- name: Download jenkins-x cli
+  get_url:
+    url: https://github.com/jenkins-x/jx-cli/releases/download/v3.1.202/jx-cli-linux-amd64.tar.gz
+    dest: /tmp/jx-cli-linux-amd64.tar.gz
+
+
+- name: Extract file
+  unarchive:
+    src: /tmp/jx-cli-linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Install jx-cli
+  copy:
+    src: /tmp/jx
+    dest: /usr/local/bin/jx
+    mode: '0755'
+    remote_src: yes

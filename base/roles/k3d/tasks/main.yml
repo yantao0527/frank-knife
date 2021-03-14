@@ -1,0 +1,6 @@
+---
+- name: Download k3d application
+  get_url:
+    url: https://github.com/rancher/k3d/releases/download/v4.1.1/k3d-linux-amd64
+    dest: /usr/local/bin/k3d
+    mode: '0755'

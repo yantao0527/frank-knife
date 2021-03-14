@@ -10,3 +10,40 @@ new-rsa:
 git-config:
 	git config --global user.name frank
 	git config --global user.email yantao0527@gmail.com
+
+mirror-aliyun:
+	sudo cp /etc/apt/sources.list /etc/apt/sources.list.origin
+	sudo sed -i 's/archive\.ubuntu\.com/mirrors\.aliyun\.com/' /etc/apt/sources.list
+	sudo apt-get update
+	# don't work, why?
+	#mkdir $(HOME)/.pip
+	#cp pip.conf $(HOME)/.pip/pip.conf
+
+install-ansible:
+	sudo apt install python3-pip
+	sudo pip3 install ansible -i https://mirrors.aliyun.com/pypi/simple/
+
+k8s-tools:
+	sudo ansible-playbook -i '127.0.0.1,' --connection=local setup.yml
+
+install-kind:
+	wget https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+	sudo mv kind-linux-amd64 /usr/local/bin/kind
+	sudo chmod 0755 /usr/local/bin/kind
+
+install-k3d:
+	wget https://github.com/rancher/k3d/releases/download/v4.1.1/k3d-linux-amd64
+	sudo mv k3d-linux-amd64 /usr/local/bin/k3d
+	sudo chmod 0755 /usr/local/bin/k3d
+
+install-helm:
+	wget --output-document=/tmp/helm-v3.5.2-linux-amd64.tar.gz https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz
+	tar xvfz /tmp/helm-v3.5.2-linux-amd64.tar.gz -C /tmp
+	sudo mv /tmp/linux-amd64/helm /usr/local/bin/helm
+	sudo chmod 0755 /usr/local/bin/helm
+
+install-jx:
+	wget --output-document=/tmp/jx-cli-linux-amd64.tar.gz https://github.com/jenkins-x/jx-cli/releases/download/v3.1.202/jx-cli-linux-amd64.tar.gz
+	tar xvfz /tmp/jx-cli-linux-amd64.tar.gz -C /tmp
+	sudo mv /tmp/jx /usr/local/bin/jx
+	sudo chmod 0755 /usr/local/bin/jx
