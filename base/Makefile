@@ -45,6 +45,9 @@ install-helm:
 	sudo mv /tmp/linux-amd64/helm /usr/local/bin/helm
 	sudo chmod 0755 /usr/local/bin/helm
 
+install-helm-diff:
+	helm plugin install https://github.com/databus23/helm-diff
+
 install-jx:
 	wget --output-document=/tmp/jx-cli-linux-amd64.tar.gz https://github.com/jenkins-x/jx-cli/releases/download/v3.1.202/jx-cli-linux-amd64.tar.gz
 	tar xvfz /tmp/jx-cli-linux-amd64.tar.gz -C /tmp
