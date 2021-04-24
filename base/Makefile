@@ -41,7 +41,7 @@ install-kind: /usr/local/bin/kind
 	sudo chmod 0755 /usr/local/bin/kind
 
 install-k3d: /usr/local/bin/k3d
-	wget https://github.com/rancher/k3d/releases/download/v4.1.1/k3d-linux-amd64
+	wget https://github.com/rancher/k3d/releases/download/v4.4.2/k3d-linux-amd64
 	sudo mv k3d-linux-amd64 /usr/local/bin/k3d
 	sudo chmod 0755 /usr/local/bin/k3d
 
