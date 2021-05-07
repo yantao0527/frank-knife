@@ -60,7 +60,7 @@ install-helmfile: /usr/local/bin/helmfile
 	sudo chmod 0755 /usr/local/bin/helmfile
 
 install-jx: /usr/local/bin/jx
-	wget --output-document=/tmp/jx-cli-linux-amd64.tar.gz https://github.com/jenkins-x/jx-cli/releases/download/v3.1.202/jx-cli-linux-amd64.tar.gz
+	wget --output-document=/tmp/jx-cli-linux-amd64.tar.gz https://github.com/jenkins-x/jx-cli/releases/download/v3.1.353/jx-cli-linux-amd64.tar.gz
 	tar xvfz /tmp/jx-cli-linux-amd64.tar.gz -C /tmp
 	sudo mv /tmp/jx /usr/local/bin/jx
 	sudo chmod 0755 /usr/local/bin/jx
