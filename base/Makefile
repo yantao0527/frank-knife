@@ -69,3 +69,7 @@ install-terraform: /usr/local/bin/terraform
 	wget --output-document=/tmp/terraform_0.14.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.14.7/terraform_0.14.7_linux_amd64.zip
 	cd /tmp && unzip terraform_0.14.7_linux_amd64.zip
 	sudo mv /tmp/terraform /usr/local/bin/terraform
+
+install-tkn:
+	wget --output-document=/tmp/tkn_0.18.0_Linux_x86_64.tar.gz https://github.com/tektoncd/cli/releases/download/v0.18.0/tkn_0.18.0_Linux_x86_64.tar.gz
+	sudo tar xvzf /tmp/tkn_0.18.0_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
