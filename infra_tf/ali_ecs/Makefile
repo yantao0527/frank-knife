@@ -39,7 +39,7 @@ plan: check-access check-secret
 	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
 create: check-access check-secret
-	@echo 安装v2ray服务器
+	@echo 创建terraform资源
 	terraform apply -auto-approve \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
@@ -61,7 +61,7 @@ state-list:
 	terraform state list
 
 destroy:
-	@echo 销毁v2ray服务器
+	@echo 销毁terraform资源
 	terraform destroy -auto-approve \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
 	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
@@ -71,3 +71,6 @@ clean:
 	rm -rf .terraform
 	rm -f playbook.sh remote.sh
 	rm -f terraform.tfstate*
+
+fmt:
+	terraform fmt

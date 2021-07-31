@@ -1,6 +1,6 @@
 # IP ADDRESS
 resource "alicloud_eip" "eip" {
-  bandwidth  = 10
+  bandwidth = 10
 }
 
 # NETWORK
@@ -10,16 +10,16 @@ resource "alicloud_vpc" "vpc" {
 }
 
 resource "alicloud_vswitch" "vsw" {
-  vswitch_name      = "${var.prefix}-vsw"
-  vpc_id            = alicloud_vpc.vpc.id
-  cidr_block        = var.vsw_1_cidr
-  zone_id           = var.zone_1
+  vswitch_name = "${var.prefix}-vsw"
+  vpc_id       = alicloud_vpc.vpc.id
+  cidr_block   = var.vsw_1_cidr
+  zone_id      = var.zone_1
 }
 
 # COMPUTE ENGINE INSTANCE
 resource "alicloud_instance" "compute" {
-  image_id              = data.alicloud_images.default.images.0.id
-  internet_charge_type  = "PayByBandwidth"
+  image_id             = data.alicloud_images.default.images.0.id
+  internet_charge_type = "PayByBandwidth"
 
   instance_type        = data.alicloud_instance_types.c1g1.instance_types.0.id
   system_disk_category = "cloud_efficiency"
@@ -27,23 +27,23 @@ resource "alicloud_instance" "compute" {
   instance_name        = var.host_name
   host_name            = var.host_name
   vswitch_id           = alicloud_vswitch.vsw.id
-  tags                 = {
+  tags = {
     from = "frank-knife"
   }
-  status               = var.compute_status
+  status = var.compute_status
 
   internet_max_bandwidth_out = 0
 }
 
 # Use an existing public key to build a alicloud key pair
 resource "alicloud_key_pair" "publickey" {
-  key_pair_name   = "frank-knife-rsa"
-  public_key = tls_private_key.global_key.public_key_openssh
+  key_pair_name = "frank-knife-rsa"
+  public_key    = tls_private_key.global_key.public_key_openssh
 }
 
 resource "alicloud_key_pair_attachment" "attachment" {
-  key_pair_name     = alicloud_key_pair.publickey.id
-  instance_ids = [ alicloud_instance.compute.id ]
+  key_pair_name = alicloud_key_pair.publickey.id
+  instance_ids  = [alicloud_instance.compute.id]
 }
 
 resource "alicloud_eip_association" "eip_asso" {
@@ -70,7 +70,7 @@ resource "alicloud_eip_association" "eip_asso" {
 
 # locals
 locals {
-  
+
   cmd_remote = "ssh root@${alicloud_eip.eip.ip_address}"
 
   cmd_edit_domain = "jx gitops requirements edit --domain ${alicloud_eip.eip.ip_address}.xip.io"
