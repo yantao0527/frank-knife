@@ -1,0 +1,6 @@
+---
+- name: Download helmfile
+  get_url:
+    url: https://github.com/roboll/helmfile/releases/download/v0.138.7/helmfile_linux_amd64
+    dest: /usr/local/bin/helmfile
+    mode: '0755'

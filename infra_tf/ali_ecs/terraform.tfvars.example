@@ -1,0 +1,24 @@
+# Required variables
+# - Fill in before beginning quickstart
+# ==========================================================
+
+
+# Environment variable
+# ----------------------------------------------------------
+# ALICLOUD_ACCESS_KEY   -> access_key
+# ALICLOUD_SECRET_KEY   -> secret_key
+
+
+# Optional variables, uncomment to customize the knife
+# ----------------------------------------------------------
+# region = ""
+# zone_1 = ""
+# host_name = ""
+# vpc_cidr = ""
+# vsw_1_cidr = ""
+
+# Prefix for all resources created by knife
+# prefix = ""
+
+# Docker version installed on target hosts
+# docker_version = ""

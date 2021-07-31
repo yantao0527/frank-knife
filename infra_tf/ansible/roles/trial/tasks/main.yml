@@ -1,0 +1,64 @@
+# - name: "Create user accounts and add users to groups"
+#   user:
+#     name: "trial"
+#     groups: "wheel,docker"
+
+# - name: "Add authorized keys"
+#   authorized_key:
+#     user: "trial"
+#     key: "{{ item }}"
+#   with_file:
+#     - files/authorized_keys
+
+- name: "保持远程连接不断开"
+  lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveInterval' line='ClientAliveInterval 60'
+- lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveCountMax' line='ClientAliveCountMax 30'
+
+- name: "reload sshd service"
+  service: name=sshd state=reloaded
+
+- name: "Install required packages"
+  yum:
+    name: ['make', 'git', 'tree']
+    state: present
+
+# - name: install ansible
+#   pip:
+#     name: 
+#       - ansible
+#       - netaddr
+
+- name: "Initial user[trial] envirnment"
+  block:
+  - name: install private key
+    copy:
+      src: id_rsa
+      dest: /home/trial/.ssh/id_rsa
+      mode: '0400'
+  
+  - name: config git user name
+    git_config:
+      name: user.name
+      scope: global
+      value: trial
+  
+  - name: config git user email
+    git_config:
+      name: user.email
+      scope: global
+      value: yantao0527@aliyun.com
+  
+  - name: config push.default simple
+    git_config:
+      name: push.default
+      scope: global
+      value: simple
+  
+  - name: check out git repository
+    git:
+      repo: "{{ setup_git }}"
+      dest: "{{ cloned_repo_path }}"
+      accept_hostkey: yes
+  
+  become: true
+  become_user: trial

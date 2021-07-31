@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+
+  # pre_tasks:
+  #   - name: update all packages
+  #     yum: 
+  #       name: "*"
+  #       state: latest
+  
+  roles:
+    - trial
+    - docker
+    - kubectl
+    - kind
+    - k3d
+    - jx
+    - helm
+    - helmfile
