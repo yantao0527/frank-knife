@@ -23,12 +23,6 @@ variable "zone_1" {
   default     = "ap-southeast-1b"
 }
 
-variable "host_name" {
-  type        = string
-  description = "主机名"
-  default     = "knife"
-}
-
 variable "vpc_cidr" {
   type        = string
   description = "阿里云vpc CIDR"
@@ -52,7 +46,7 @@ variable "compute_status" {
 variable "prefix" {
   type        = string
   description = "Prefix added to names of all resources"
-  default     = "knife"
+  default     = "infra"
 }
 
 variable "docker_version" {

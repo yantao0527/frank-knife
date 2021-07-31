@@ -1,6 +1,7 @@
 # IP ADDRESS
 resource "alicloud_eip" "eip" {
-  bandwidth = 10
+  address_name = "${var.prefix}-eip"
+  bandwidth    = 10
 }
 
 # NETWORK
@@ -24,8 +25,8 @@ resource "alicloud_instance" "compute" {
   instance_type        = data.alicloud_instance_types.c1g1.instance_types.0.id
   system_disk_category = "cloud_efficiency"
   security_groups      = alicloud_security_group.group.*.id
-  instance_name        = var.host_name
-  host_name            = var.host_name
+  instance_name        = "${var.prefix}-vm"
+  host_name            = "${var.prefix}-vm"
   vswitch_id           = alicloud_vswitch.vsw.id
   tags = {
     from = "frank-knife"
@@ -37,7 +38,7 @@ resource "alicloud_instance" "compute" {
 
 # Use an existing public key to build a alicloud key pair
 resource "alicloud_key_pair" "publickey" {
-  key_pair_name = "frank-knife-rsa"
+  key_pair_name = "${var.prefix}-rsa"
   public_key    = tls_private_key.global_key.public_key_openssh
 }
 
