@@ -1,24 +1,24 @@
 # IP ADDRESS
 resource "alicloud_eip" "eip" {
   # address_name = "${var.prefix}-eip"
-  name = "${var.prefix}-eip"
-  bandwidth    = 10
+  name      = "${var.prefix}-eip"
+  bandwidth = 10
 }
 
 # NETWORK
 resource "alicloud_vpc" "vpc" {
   # vpc_name   = "${var.prefix}-vpc"
-  name   = "${var.prefix}-vpc"
+  name       = "${var.prefix}-vpc"
   cidr_block = var.vpc_cidr
 }
 
 resource "alicloud_vswitch" "vsw" {
   # vswitch_name = "${var.prefix}-vsw"
-  name = "${var.prefix}-vsw"
-  vpc_id       = alicloud_vpc.vpc.id
-  cidr_block   = var.vsw_1_cidr
+  name       = "${var.prefix}-vsw"
+  vpc_id     = alicloud_vpc.vpc.id
+  cidr_block = var.vsw_1_cidr
   # zone_id      = var.zone_1
-  availability_zone      = var.zone_1
+  availability_zone = var.zone_1
 }
 
 # COMPUTE ENGINE INSTANCE
@@ -43,14 +43,14 @@ resource "alicloud_instance" "compute" {
 # Use an existing public key to build a alicloud key pair
 resource "alicloud_key_pair" "publickey" {
   # key_pair_name = "${var.prefix}-rsa"
-  key_name = "${var.prefix}-rsa"
-  public_key    = tls_private_key.global_key.public_key_openssh
+  key_name   = "${var.prefix}-rsa"
+  public_key = tls_private_key.global_key.public_key_openssh
 }
 
 resource "alicloud_key_pair_attachment" "attachment" {
   # key_pair_name = alicloud_key_pair.publickey.id
-  key_name = alicloud_key_pair.publickey.id
-  instance_ids  = [alicloud_instance.compute.id]
+  key_name     = alicloud_key_pair.publickey.id
+  instance_ids = [alicloud_instance.compute.id]
 }
 
 resource "alicloud_eip_association" "eip_asso" {
@@ -70,9 +70,9 @@ resource "alicloud_eip_association" "eip_asso" {
     }
   }
 
-#  provisioner "local-exec" {
-#    command = local.cmd_playbook
-#  }
+  #  provisioner "local-exec" {
+  #    command = local.cmd_playbook
+  #  }
 }
 
 # locals

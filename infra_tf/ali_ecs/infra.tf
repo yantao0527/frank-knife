@@ -11,9 +11,9 @@ resource "local_file" "ssh_private_key_pem" {
 }
 
 resource "local_file" "ssh_public_key_openssh" {
-  filename = "${path.module}/id_rsa.pub"
-  content  = tls_private_key.global_key.public_key_openssh
-  file_permission   = "0666"
+  filename        = "${path.module}/id_rsa.pub"
+  content         = tls_private_key.global_key.public_key_openssh
+  file_permission = "0666"
 }
 
 resource "local_file" "cmd_remote" {
