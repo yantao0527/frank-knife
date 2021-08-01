@@ -39,8 +39,8 @@ variable "vsw_1_cidr" {
 
 variable "compute_status" {
   type        = string
-  description = "compute status[ running | stopped ]"
-  default     = "running"
+  description = "compute status[ Running | Stopped ]"
+  default     = "Running"
 }
 
 variable "prefix" {

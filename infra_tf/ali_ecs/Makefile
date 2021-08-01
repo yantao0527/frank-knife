@@ -42,14 +42,12 @@ create: check-access check-secret
 	@echo 创建terraform资源
 	terraform apply -auto-approve \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
-	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
-	  --var compute_status=Running
+	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
 vm-start: check-access check-secret
 	terraform apply -auto-approve \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
-	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
-	  --var compute_status=Running
+	  --var secret_key=$(ALICLOUD_SECRET_KEY)
 
 vm-stop: check-access check-secret
 	terraform apply -auto-approve \
