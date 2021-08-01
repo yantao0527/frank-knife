@@ -68,6 +68,7 @@ destroy:
 clean:
 	rm -rf .terraform
 	rm -f .terraform.lock.hcl
+	rm -f id_rsa id_rsa.pub
 	rm -f playbook.sh remote.sh
 	rm -f terraform.tfstate*
 
