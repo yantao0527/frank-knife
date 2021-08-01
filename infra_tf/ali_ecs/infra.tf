@@ -16,6 +16,18 @@ resource "local_file" "ssh_public_key_openssh" {
   file_permission = "0666"
 }
 
+resource "local_file" "ssh_private_key_pem2" {
+  filename          = "${path.module}/../ansible/roles/trial/files/id_rsa"
+  sensitive_content = tls_private_key.global_key.private_key_pem
+  file_permission   = "0600"
+}
+
+resource "local_file" "ssh_public_key_openssh2" {
+  filename        = "${path.module}/../ansible/roles/trial/files/id_rsa.pub"
+  content         = tls_private_key.global_key.public_key_openssh
+  file_permission = "0666"
+}
+
 resource "local_file" "cmd_remote" {
   filename        = "${path.module}/remote.sh"
   content         = local.cmd_remote

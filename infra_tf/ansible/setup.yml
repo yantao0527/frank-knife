@@ -11,10 +11,10 @@
   
   roles:
     - trial
-    - docker
-    - kubectl
-    - kind
-    - k3d
-    - jx
-    - helm
-    - helmfile
+    # - docker
+    # - kubectl
+    # - kind
+    # - k3d
+    # - jx
+    # - helm
+    # - helmfile

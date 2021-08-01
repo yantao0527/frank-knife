@@ -1,3 +1,3 @@
 sshdconfig: /etc/ssh/sshd_config
-setup_git: ssh://git@github.com/yantao0527/frank-knife.git
+setup_git: https://github.com/yantao0527/frank-knife.git
 cloned_repo_path: /home/trial/workspace/frank-knife

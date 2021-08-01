@@ -3,6 +3,9 @@ v2ray/terraform.tfstate*
 v2ray/remote.sh
 v2ray/playbook.sh
 
+infra_tf/ansible/roles/trial/files/id_rsa
+infra_tf/ansible/roles/trial/files/id_rsa.pub
+
 infra_tf/ali_ecs/.terraform/
 infra_tf/ali_ecs/terraform.tfstate*
 infra_tf/ali_ecs/terraform.tfvars

@@ -78,7 +78,10 @@ resource "alicloud_eip_association" "eip_asso" {
 # locals
 locals {
 
-  cmd_remote = "ssh -i ${path.module}/id_rsa root@${alicloud_eip.eip.ip_address}"
+  cmd_remote = <<EOT
+      ssh -i ${path.module}/id_rsa root@${alicloud_eip.eip.ip_address}
+#      ssh -i ${path.module}/id_rsa trial@${alicloud_eip.eip.ip_address}
+  EOT
 
   cmd_edit_domain = "jx gitops requirements edit --domain ${alicloud_eip.eip.ip_address}.xip.io"
 
