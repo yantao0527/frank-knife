@@ -1,3 +1,3 @@
 sshdconfig: /etc/ssh/sshd_config
-setup_git: ssh://git@github.com/yantao0527/jx3-kind-vault02.git
-cloned_repo_path: /home/trial/workspace/jx3-kind-vault02
+setup_git: ssh://git@github.com/yantao0527/frank-knife.git
+cloned_repo_path: /home/trial/workspace/frank-knife
