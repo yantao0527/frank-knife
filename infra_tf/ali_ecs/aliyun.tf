@@ -1,20 +1,24 @@
 # IP ADDRESS
 resource "alicloud_eip" "eip" {
-  address_name = "${var.prefix}-eip"
+  # address_name = "${var.prefix}-eip"
+  name = "${var.prefix}-eip"
   bandwidth    = 10
 }
 
 # NETWORK
 resource "alicloud_vpc" "vpc" {
-  vpc_name   = "${var.prefix}-vpc"
+  # vpc_name   = "${var.prefix}-vpc"
+  name   = "${var.prefix}-vpc"
   cidr_block = var.vpc_cidr
 }
 
 resource "alicloud_vswitch" "vsw" {
-  vswitch_name = "${var.prefix}-vsw"
+  # vswitch_name = "${var.prefix}-vsw"
+  name = "${var.prefix}-vsw"
   vpc_id       = alicloud_vpc.vpc.id
   cidr_block   = var.vsw_1_cidr
-  zone_id      = var.zone_1
+  # zone_id      = var.zone_1
+  availability_zone      = var.zone_1
 }
 
 # COMPUTE ENGINE INSTANCE
@@ -38,12 +42,14 @@ resource "alicloud_instance" "compute" {
 
 # Use an existing public key to build a alicloud key pair
 resource "alicloud_key_pair" "publickey" {
-  key_pair_name = "${var.prefix}-rsa"
+  # key_pair_name = "${var.prefix}-rsa"
+  key_name = "${var.prefix}-rsa"
   public_key    = tls_private_key.global_key.public_key_openssh
 }
 
 resource "alicloud_key_pair_attachment" "attachment" {
-  key_pair_name = alicloud_key_pair.publickey.id
+  # key_pair_name = alicloud_key_pair.publickey.id
+  key_name = alicloud_key_pair.publickey.id
   instance_ids  = [alicloud_instance.compute.id]
 }
 
@@ -72,7 +78,7 @@ resource "alicloud_eip_association" "eip_asso" {
 # locals
 locals {
 
-  cmd_remote = "ssh root@${alicloud_eip.eip.ip_address}"
+  cmd_remote = "ssh -i ${path.module}/id_rsa root@${alicloud_eip.eip.ip_address}"
 
   cmd_edit_domain = "jx gitops requirements edit --domain ${alicloud_eip.eip.ip_address}.xip.io"
 

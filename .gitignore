@@ -6,5 +6,7 @@ v2ray/playbook.sh
 infra_tf/ali_ecs/.terraform/
 infra_tf/ali_ecs/terraform.tfstate*
 infra_tf/ali_ecs/terraform.tfvars
+infra_tf/ali_ecs/id_rsa
+infra_tf/ali_ecs/id_rsa.pub
 infra_tf/ali_ecs/remote.sh
 infra_tf/ali_ecs/playbook.sh
