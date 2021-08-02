@@ -48,7 +48,7 @@
   - name: install private key
     copy:
       src: id_rsa
-      dest: id_rsa
+      dest: /home/trial/.ssh/id_rsa
       mode: '0400'
   
   - name: config git user name

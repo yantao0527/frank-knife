@@ -74,3 +74,11 @@ clean:
 
 fmt:
 	terraform fmt
+
+copy-git-id:
+	ssh -i ./id_rsa trial@47.241.96.72 \
+	    "git config --global user.name $(shell git config --get user.name); \
+	     git config --global user.email $(shell git config --get user.email)"
+	ssh -i ./id_rsa trial@47.241.96.72 \
+	    "cd workspace/frank-knife; git remote set-url origin git@github.com:yantao0527/frank-knife.git"
+	scp -i ./id_rsa $(HOME)/.ssh/id_rsa trial@47.241.96.72:.ssh/id_rsa
