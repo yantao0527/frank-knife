@@ -1,0 +1,42 @@
+apiVersion: k3d.io/v1alpha2
+kind: Simple
+name: nuts
+kubeAPI:
+  # host: "z01.yantao0527.me"
+  # hostIP: "0.0.0.0"
+  hostPort: "6550"
+ports:
+  - port: 80:80             # http2
+    nodeFilters:
+      - loadbalancer
+  - port: 443:443           # https
+    nodeFilters:
+      - loadbalancer
+  - port: 5432:5432         # postgres
+    nodeFilters:
+      - loadbalancer
+  - port: 6379:6379         # redis
+    nodeFilters:
+      - loadbalancer
+  - port: 21012:21012       # agw-2
+    nodeFilters:
+      - loadbalancer
+  - port: 21014:21014       # agw-4
+    nodeFilters:
+      - loadbalancer
+  - port: 21016:21016       # agw-6
+    nodeFilters:
+      - loadbalancer
+  - port: 23012:23012       # dcms-2
+    nodeFilters:
+      - loadbalancer
+  - port: 23014:23014       # dcms-4
+    nodeFilters:
+      - loadbalancer
+  - port: 27017:27017       # mongo
+    nodeFilters:
+      - loadbalancer
+options:
+  k3s:
+    extraServerArgs:
+      - --no-deploy=traefik
