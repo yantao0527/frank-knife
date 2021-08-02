@@ -26,7 +26,7 @@ resource "alicloud_instance" "compute" {
   image_id             = data.alicloud_images.default.images.0.id
   internet_charge_type = "PayByBandwidth"
 
-  instance_type        = data.alicloud_instance_types.c1g1.instance_types.0.id
+  instance_type        = data.alicloud_instance_types.c2g8.instance_types.0.id
   system_disk_category = "cloud_efficiency"
   security_groups      = alicloud_security_group.group.*.id
   instance_name        = "${var.prefix}-vm"
