@@ -70,9 +70,9 @@ resource "alicloud_eip_association" "eip_asso" {
     }
   }
 
-  #  provisioner "local-exec" {
-  #    command = local.cmd_playbook
-  #  }
+  provisioner "local-exec" {
+    command = local.cmd_playbook
+  }
 }
 
 # locals
