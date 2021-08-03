@@ -34,6 +34,9 @@ registry-catalog:
 
 ## K3D
 
+k3d-network:
+	docker network create k3d-nuts
+	
 # 无VPN，适合国外
 create0:
 	k3d cluster create \
