@@ -2,7 +2,7 @@ apiVersion: k3d.io/v1alpha2
 kind: Simple
 name: nuts
 kubeAPI:
-  # host: "z01.yantao0527.me"
+  # host: "nuts.yantao0527.me"
   # hostIP: "0.0.0.0"
   hostPort: "6443"
 ports:
@@ -40,3 +40,4 @@ options:
   k3s:
     extraServerArgs:
       - --no-deploy=traefik
+      - --tls-san=yantao0527.me
