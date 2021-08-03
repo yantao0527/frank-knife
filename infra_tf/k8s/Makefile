@@ -36,11 +36,11 @@ registry-catalog:
 
 k3d-network:
 	docker network create k3d-nuts
-	
+
 # 无VPN，适合国外
 create0:
 	k3d cluster create \
-	  --config ${PWD}/infrastructure/k3d_config0.yaml \
+	  --config ${PWD}/k3d_config0.yaml \
 	  --registry-config ${PWD}/registries.yaml \
 	  --volume ${PWD}:/nuts@all
 
@@ -55,3 +55,7 @@ create:
 
 delete:
 	k3d cluster delete nuts
+
+one-click0: k3d-network registry-volume registry0 registry-network create0
+
+one-click: k3d-network registry-volume registry registry-network create
