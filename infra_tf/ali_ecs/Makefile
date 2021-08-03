@@ -85,3 +85,11 @@ copy-git-id:
 	     mv .ssh/id_rsa .ssh/id_rsa.old; \
 	     cd workspace/frank-knife; git remote set-url origin git@github.com:yantao0527/frank-knife.git; "
 	scp -i ./id_rsa $(HOME)/.ssh/id_rsa trial@$(shell make node-eip):.ssh/id_rsa
+
+kubeconfig:
+	scp -i ./id_rsa trial@$(shell make node-eip):.kube/config $(HOME)/.kube/knife.conf
+	sed -i 's/https\:\/\/0\.0\.0\.0/https\:\/\/nuts\.yantao0527\.me/' $(HOME)/.kube/knife.conf
+
+kubeconfig-dns:
+	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
+	@echo "$(shell make node-eip)    nuts.yantao0527.me"
