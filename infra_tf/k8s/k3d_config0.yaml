@@ -4,7 +4,7 @@ name: nuts
 kubeAPI:
   # host: "z01.yantao0527.me"
   # hostIP: "0.0.0.0"
-  hostPort: "6550"
+  hostPort: "6443"
 ports:
   - port: 80:80             # http2
     nodeFilters:
