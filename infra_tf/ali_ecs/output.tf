@@ -1,4 +1,8 @@
 
+output "node_eip" {
+  value = alicloud_eip.eip.ip_address
+}
+
 output "cmd_remote" {
   description = "ssh remote host"
   value       = local.cmd_remote

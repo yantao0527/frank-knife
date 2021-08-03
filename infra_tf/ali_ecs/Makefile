@@ -75,10 +75,13 @@ clean:
 fmt:
 	terraform fmt
 
+node-eip:
+	@terraform output -raw node_eip
+
 copy-git-id:
-	ssh -i ./id_rsa trial@47.241.96.72 \
+	ssh -i ./id_rsa trial@$(shell make node-eip) \
 	    "git config --global user.name $(shell git config --get user.name); \
-	     git config --global user.email $(shell git config --get user.email)"
-	ssh -i ./id_rsa trial@47.241.96.72 \
-	    "cd workspace/frank-knife; git remote set-url origin git@github.com:yantao0527/frank-knife.git"
-	scp -i ./id_rsa $(HOME)/.ssh/id_rsa trial@47.241.96.72:.ssh/id_rsa
+	     git config --global user.email $(shell git config --get user.email); \
+	     mv .ssh/id_rsa .ssh/id_rsa.old; \
+	     cd workspace/frank-knife; git remote set-url origin git@github.com:yantao0527/frank-knife.git; "
+	scp -i ./id_rsa $(HOME)/.ssh/id_rsa trial@$(shell make node-eip):.ssh/id_rsa
