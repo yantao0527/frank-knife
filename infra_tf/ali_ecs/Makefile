@@ -89,6 +89,8 @@ copy-git-id:
 kubeconfig:
 	scp -i ./id_rsa trial@$(shell make node-eip):.kube/config $(HOME)/.kube/knife.conf
 	sed -i 's/https\:\/\/0\.0\.0\.0/https\:\/\/nuts\.yantao0527\.me/' $(HOME)/.kube/knife.conf
+	@echo ""
+	@echo 'export KUBECONFIG=$$HOME/.kube/knife.conf 可用kubectl访问k3d'
 
 kubeconfig-dns:
 	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
