@@ -6,8 +6,3 @@ mirrors:
     endpoint:
       - http://registry.localhost:5000
 
-configs:
-  registry.cn-hangzhou.aliyuncs.com:
-    auth:
-      username: yantao0527
-      password: mcafee123
