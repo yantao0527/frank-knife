@@ -4,7 +4,7 @@ v2ray/remote.sh
 v2ray/playbook.sh
 
 acme/out
-acmd/*.sh
+acme/*.sh
 
 infra_tf/ansible/roles/trial/files/id_rsa
 infra_tf/ansible/roles/trial/files/id_rsa.pub
