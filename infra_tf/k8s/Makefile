@@ -67,8 +67,8 @@ rancher:
 	  --restart=unless-stopped \
 	  -p 8080:80 \
 	  -p 8443:443 \
-	  -v ${PWD}/${SPECIAL_TARGET}/ssl/fullchain.pem:/etc/rancher/ssl/cert.pem \
-	  -v ${PWD}/${SPECIAL_TARGET}/ssl/privkey.pem:/etc/rancher/ssl/key.pem \
+	  -v ${PWD}/ssl/fullchain.pem:/etc/rancher/ssl/cert.pem \
+	  -v ${PWD}/ssl/privkey.pem:/etc/rancher/ssl/key.pem \
 	  --privileged \
 	  rancher/rancher \
 	  --no-cacerts
