@@ -1,0 +1,253 @@
+apiVersion: v1
+data:
+  8ZV2hlViEt.txt: 0aa029904949c8a997bd7b172bf411c7
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>示例nuts</title>
+      </head>
+      <body>
+        <h1>这是Frank的示例nuts部署</h1>
+        <h1>项目</h1>
+        <ul>
+          <li><a href="https://gitea.nuts.yantao0527.me">Gitea</a></li>
+        </ul>
+        <h1>观测</h1>
+        <ul>
+          <li><a href="https://kiali.nuts.yantao0527.me">Kiali</a></li>
+          <li><a href="https://prometheus.nuts.yantao0527.me">Prometheus</a></li>
+          <li><a href="https://grafana.nuts.yantao0527.me">Grafana</a></li>
+          <li><a href="https://tracing.nuts.yantao0527.me">Tracing</a></li>
+        </ul>
+        <h1>链接</h1>
+        <ul>
+          <li><a href="https://rancher.nuts.yantao0527.me:8443">Rancher</a></li>
+          <li><a href="https://argocd.nuts.yantao0527.me">Argocd</a></li>
+        </ul>
+      </body>
+    </html>
+kind: ConfigMap
+metadata:
+  annotations:
+    note: generated
+  labels:
+    type: generated
+  name: nginx-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: website
+    service: website
+  name: website
+  namespace: website
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: website
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: website
+    version: v1
+  name: website
+  namespace: website
+spec:
+  selector:
+    matchLabels:
+      app: website
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: website
+        version: v1
+    spec:
+      containers:
+      - image: nginx:1.13.0-alpine
+        imagePullPolicy: IfNotPresent
+        name: website
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: nginx-html
+          readOnly: true
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - configMap:
+          name: nginx-html
+        name: nginx-html
+      - emptyDir: {}
+        name: log
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: http-gateway
+  namespace: website
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - www.nuts.yantao0527.me
+    - kiali.nuts.yantao0527.me
+    - prometheus.nuts.yantao0527.me
+    - grafana.nuts.yantao0527.me
+    - tracing.nuts.yantao0527.me
+    port:
+      name: http2
+      number: 80
+      protocol: HTTP2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-gateway
+  namespace: website
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - www.nuts.yantao0527.me
+    - kiali.nuts.yantao0527.me
+    - prometheus.nuts.yantao0527.me
+    - grafana.nuts.yantao0527.me
+    - tracing.nuts.yantao0527.me
+    port:
+      name: https-tls
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: website-tls
+      mode: SIMPLE
+  - hosts:
+    - dashboard.nuts.yantao0527.me
+    port:
+      name: https-passthrough
+      number: 443
+      protocol: HTTPS
+    tls:
+      mode: PASSTHROUGH
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dashboard
+  namespace: website
+spec:
+  gateways:
+  - https-gateway
+  hosts:
+  - dashboard.nuts.yantao0527.me
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - dashboard.nuts.yantao0527.me
+    route:
+    - destination:
+        host: kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local
+        port:
+          number: 443
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana-vs
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - grafana.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: grafana.istio-system.svc.cluster.local
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali-vs
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - kiali.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: kiali.istio-system.svc.cluster.local
+        port:
+          number: 20001
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus-vs
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - prometheus.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: prometheus.istio-system.svc.cluster.local
+        port:
+          number: 9090
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tracing-vs
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - tracing.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: tracing.istio-system.svc.cluster.local
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: website
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - www.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: website.website.svc.cluster.local
+        port:
+          number: 80
