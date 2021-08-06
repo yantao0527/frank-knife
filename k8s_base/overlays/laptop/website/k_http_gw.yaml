@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: http-gateway
+spec:
+  servers:
+  - port:
+      number: 80
+      name: http2
+      protocol: HTTP2
+    hosts:
+    - z01.yantao0527.me
+    - leasing.z01.yantao0527.me
+    - argocd.z01.yantao0527.me
+    - kiali.z01.yantao0527.me
+    - prometheus.z01.yantao0527.me
+    - grafana.z01.yantao0527.me
+    - tracing.z01.yantao0527.me
+---

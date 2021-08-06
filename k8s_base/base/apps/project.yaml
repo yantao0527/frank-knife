@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nuts
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: 'nuts project'
+  destinations:
+  - namespace: 'website'
+    server: https://kubernetes.default.svc
+  - namespace: 'git'
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/yantao0527/frank-knife.git

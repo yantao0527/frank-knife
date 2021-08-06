@@ -1,0 +1,5 @@
+bases:
+- ../../../base/apps
+patchesStrategicMerge:
+- k_app_website.yaml
+

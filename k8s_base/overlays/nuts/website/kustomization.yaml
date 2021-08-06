@@ -1,0 +1,13 @@
+bases:
+- ../../../base/website
+configMapGenerator:
+- name: nginx-html
+  files:
+  - html/index.html
+  - html/8ZV2hlViEt.txt
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    type: generated
+  annotations:
+    note: generated

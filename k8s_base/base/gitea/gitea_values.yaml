@@ -1,0 +1,20 @@
+service:
+  http:
+    type: ClusterIP
+    port: 3000
+    clusterIP: 
+  ssh:
+    type: ClusterIP
+    port: 32022
+    clusterIP: 
+
+ingress:
+  enabled: false
+  hosts:
+    - gitea.z01.yantao0527.me
+  tls:
+    - secretName: tls-yantao0527
+      hosts:
+        - gitea.z01.yantao0527.me
+
+

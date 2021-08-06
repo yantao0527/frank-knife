@@ -1,0 +1,8 @@
+namespace: istio-system
+resources:
+- grafana.yaml
+- jaeger.yaml
+- kiali.yaml
+- prometheus.yaml
+#- extras/prometheus-operator.yaml
+#- extras/zipkin.yaml

@@ -1,0 +1,8 @@
+namespace: website
+resources:
+- website.yaml
+- website_vs.yaml
+- http_gw.yaml
+- https_gw.yaml
+- addons_vs.yaml
+- dashboard_vs.yaml

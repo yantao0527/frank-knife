@@ -1,0 +1,10 @@
+namespace: git
+repositories:
+- name: gitea
+  url: https://dl.gitea.io/charts
+releases:
+- chart: gitea/gitea
+  version: 2.2.2
+  name: git
+  values:
+  - gitea_values.yaml

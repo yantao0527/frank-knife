@@ -1,0 +1,8 @@
+namespace: argocd
+resources:
+- project.yaml
+- known_hosts.yaml
+#- private_key.yaml
+- repositories.yaml
+- app_website.yaml
+#- app_gitea.yaml

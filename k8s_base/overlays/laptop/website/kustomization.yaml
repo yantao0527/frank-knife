@@ -1,0 +1,18 @@
+bases:
+- ../../../base/website
+configMapGenerator:
+- name: nginx-html
+  files:
+  - index.html
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    type: generated
+  annotations:
+    note: generated
+patchesStrategicMerge:
+- k_website_vs.yaml
+- k_http_gw.yaml
+- k_https_gw.yaml
+- k_addons_vs.yaml
+- k_dashboard_vs.yaml

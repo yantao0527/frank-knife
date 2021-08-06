@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-gateway
+spec:
+  servers:
+  - port:
+      number: 443
+      name: https-tls
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: website-tls
+    hosts:
+    - z01.yantao0527.me
+    - leasing.z01.yantao0527.me
+    - argocd.z01.yantao0527.me
+    - kiali.z01.yantao0527.me
+    - prometheus.z01.yantao0527.me
+    - grafana.z01.yantao0527.me
+    - tracing.z01.yantao0527.me
+  - port:
+      number: 443
+      name: https-passthrough
+      protocol: HTTPS
+    tls:
+      mode: PASSTHROUGH
+    hosts:
+    - dashboard.z01.yantao0527.me
+---

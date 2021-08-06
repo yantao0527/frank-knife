@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 443
+      name: https-tls
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: website-tls
+    hosts:
+    - www.nuts.yantao0527.me
+    - kiali.nuts.yantao0527.me
+    - prometheus.nuts.yantao0527.me
+    - grafana.nuts.yantao0527.me
+    - tracing.nuts.yantao0527.me
+  - port:
+      number: 443
+      name: https-passthrough
+      protocol: HTTPS
+    tls:
+      mode: PASSTHROUGH
+    hosts:
+    - dashboard.nuts.yantao0527.me
+---

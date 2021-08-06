@@ -1,0 +1,14 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: website
+  namespace: argocd
+spec:
+  destination:
+    namespace: website
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    path: k8s_base/special/nuts/website
+    repoURL: https://github.com/yantao0527/frank-knife.git

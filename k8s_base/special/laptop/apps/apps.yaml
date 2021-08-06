@@ -1,0 +1,92 @@
+apiVersion: v1
+data:
+  repositories: |
+    - name: coding
+      sshPrivateKeySecret:
+        key: sshPrivateKey
+        name: repo-coding-priv
+      type: git
+      url: git@e.coding.net:yantao0527/nuts/studio.git
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: argocd
+---
+apiVersion: v1
+data:
+  ssh_known_hosts: |
+    bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
+    github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+    gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=
+    gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf
+    gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9
+    ssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+    vs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+    e.coding.net ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHOWdwLpkos2CLli6DFvQ36yQE6Pe/PtFp3XwyirfZCIoGWnedaWI8zkJWVCs0wgOB9/urFepTDfV2wN49KGy1sl2/CCDEH2K/zeoEAZlTcBrhU17bwg1yMHCyJ7IM+zdLzItDEKYjgoWqVdUGK1dXQQlwt7GP4W7HqffelQQoVxOMoZ5N50MzD+nvV4y8iq0KwDQNy62iU4hui9ajCSVUDLu/06ucd5IojSI9keRIYAXvQf52TJ5EbvoBggp9RhjuWNEG8IhnPP6rzPS11Ocmwg/HsP8xOKL28AeDBAh6B6MEBDtlyp5Yfu9cwZJ9CFtU/x5fHFPtANmgIphAfwN1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-ssh-known-hosts-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-ssh-known-hosts-cm
+  namespace: argocd
+---
+apiVersion: v1
+data:
+  sshPrivateKey: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb1FJQkFBS0NBUUVBdjFWZm5BT3BuTFMyTjQ3eFZydFE5aGNzQmhaQkFXTkhGaFZrWlc2NTFLVGZBZ1hJCll5UGxNeTBjZS9IcXppdjlaSTNTWWE3dm43SzNHaUlWVkNaR0d2UXo3bUFuQ1hDVUViRm5rT3BvamRiQ0NvU2kKWUVhZ3JUZGxwR3d2eDd6TjhDMHRaaU9hcGVVZ0pMRGVNQ2czOEpIR2YwcEZGWE9TY1ZSc2lSSllUdFFNbFJkYgpwYmd6aHdpT3plMjZjVkx2MlZZbDRRSjZSY1pTejJoY0h6dWIyUzJWSXkwdzhPQk1NVVlpWTI0U1UzSTZPTkxBCmE5Q29lbE4xaDMvYkg4bjFpb05rTTBCdkhGVi8vdHZya3AxZ0s2QjNQSGhXSDBSWVJmSlllMGRORUE3YWphQ2sKVTRKL3VtbnN3Z1NwNWh2MnFXNjU0Q0F2ZzVZeUd5Z1ZYaDdWUVFJQkl3S0NBUUF4TXpYWHFTdWRVd3BJelB3NgozN1c3bjQ3NlFEeVo5UFVGcmJxNi96Y1piRGxZU3FFK0VJdGs3bGZJR2FMSFRTUG1xQ0FudjBUdWpRcURFQlFjCjgrWWtNQ3FjWWQ0bS83RUwzU2xDaFd0WHJFQ0dYSjdJVEt6NVYyTkhpWWloRTBybC9QMExvc0ZkMjlVUXY4UWIKQXdjUitabHhNRnJvUWtvNlppcUpwYUd0M2s3Z1BDVWxuVlE2NEFRTVZLZHN3UkpvNzFQN01LK2EvamRxRHlCbwpYRndoMVZBcmxtbnFVV00xRWR1cmUybjFldmtiLzJHMHZPS2ZFK21QL2tDNlpjSVVGenB3TWp0NzY5eXFNQzZSCjNOYTFRWWhWQzJ3TzhqSDlnd3h3QXlBUmVvMm5nNnFJcmRqeEh1NWlNcHdYbkdHVGFwYmxTZFBMKy9KM0ViUjMKMk9jYkFvR0JBUGQzK2xmeHl4cHhaRnRRV0N0dGtQTFpZU1pZTVZ4U0prdEVHWnN3ZWE4T3lqQlFxRFRuRXMrawpmZnZQaVJaWlhPL2d6Y2phU2ZoRkFFTHZ6QWd5VlBRMW9mNFFGV1FRM1dyZEd4dm9jUVlEbi9IdGtDb0s5Vys2Cm5mWWNaV25JRnMyc2F2QjF4a2g2ZjlMSEtGaXlxY3lQSVNZQnhEMnM0ZWgzQ0cxODNrMWxBb0dCQU1YdCtqcGEKaVVOTklKV0doVHpPbWtPZ3hBNUdNRG9uR0w1RU1GOVk2UGhHMElKaDVyVjZrUHErWmtJVmR0R3hOdy9Pc2duUwpxQ0oxV3hnU1pVajhJaXNHdi9TbnZRZEYvMGsyazZqSVExQVJ5TWgxOUtSTDlsOEd5SWRWOGkydXFhMGM0RldSClVRZ0lBQWtucGJsSloxbE95NEh3NTRGTHA1cTRvZW9QTGVpdEFvR0JBT0pCenZGU0dNZTRJVDJMU1V4RzZ1eXAKZldUaTYwMFg2SDlVTktzbEFZb2NKcEtTNHU2S0g5UEpsOEduemN0S1k1bDlFK3JXTlFBL0ZpNlNHYUVZRXlocgpqTXNIWkFPM3BkNEwrNGM2NnY0dk15WlZpeDhmOWxlR0RNUENNTlcrUUx3TFduVnkvbTRtMjBSZVVNWWZzVEFOCjFTb1FQbVJHU3VNckFHUWFaTmtMQW9HQUVQY2tFNkZjT1BmN2VvZmZpTjZDUUUrYnhyV1BHdTFvaFZaTlNnQk8KZTY1TVl2SnkzRnIyZStSdktqeGFwRUpqemllbzNFVkJuSTIzV2RXdzZQK3JLRUpvT1lxNGJsWjA5NldYb01DMQpVQUdHUFJGc3ZhQWNib3VOaC9Gc2g1S2cxRkx1cUQrbjNCM3hYOTdUc012SEI2ZXJDeU5IQ3hVYy9xSWNnY2JKCmE3Y0NnWUFSaDFSRm5abFlFYVhlUTlhN0VqV3h0cDBRbmlpUE4rY3U3S0hwWkw3aGZoQkZkMDBQUEhPaG42Wk8KaGlpam0rcUp4NmhOMVNzUEQ4U09qYVNSSUJJUUFLN1QyejVHL29lOTBXeDJoNmxwZzdGY2hSTi9iWlpPMWRHRwpuNDVqc04zS3R2ZXMrWVlDS0EvY1NRZVB3aTlaZzRIRkRuOE4xaXhjbDEyM2Rjc2pZZz09Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0t
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+  name: repo-coding-priv
+  namespace: argocd
+type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nuts
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: nuts project
+  destinations:
+  - namespace: website
+    server: https://kubernetes.default.svc
+  - namespace: leasing
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - git@e.coding.net:yantao0527/nuts/studio.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: leasing
+  namespace: argocd
+spec:
+  destination:
+    namespace: leasing
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    path: special/common/leasing
+    repoURL: git@e.coding.net:yantao0527/nuts/studio.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: website
+  namespace: argocd
+spec:
+  destination:
+    namespace: website
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    path: special/laptop/website
+    repoURL: git@e.coding.net:yantao0527/nuts/studio.git
