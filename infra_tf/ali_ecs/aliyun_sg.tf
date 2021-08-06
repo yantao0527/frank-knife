@@ -71,7 +71,7 @@ resource "alicloud_security_group_rule" "accept_octant_rule" {
   description       = "octant"
 }
 
-resource "alicloud_security_group_rule" "accept_local_tea_http_rule" {
+resource "alicloud_security_group_rule" "accept_rancher_http_rule" {
   type              = "ingress"
   ip_protocol       = "tcp"
   policy            = "accept"
@@ -79,7 +79,18 @@ resource "alicloud_security_group_rule" "accept_local_tea_http_rule" {
   priority          = 100
   security_group_id = alicloud_security_group.group.id
   cidr_ip           = "0.0.0.0/0"
-  description       = "second http"
+  description       = "rancher http"
+}
+
+resource "alicloud_security_group_rule" "accept_rancher_https_rule" {
+  type              = "ingress"
+  ip_protocol       = "tcp"
+  policy            = "accept"
+  port_range        = "8443/8443"
+  priority          = 100
+  security_group_id = alicloud_security_group.group.id
+  cidr_ip           = "0.0.0.0/0"
+  description       = "rancher https"
 }
 
 resource "alicloud_security_group_rule" "accept_git_ssh_rule" {
