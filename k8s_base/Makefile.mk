@@ -107,7 +107,9 @@ cert-manager-status:
 ## Dashboard
 
 dashboard:
-	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+	kubectl apply -f base/dashboard/dashboard_v2.2.0.yaml
+
+#	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
 
 dashboard-user:
 	kubectl apply -f base/dashboard/admin_user.yaml
