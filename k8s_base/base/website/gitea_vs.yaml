@@ -11,7 +11,7 @@ spec:
   http:
   - route:
     - destination:
-        host: git-gitea-http
+        host: git-gitea-http.git.svc.cluster.local
         port:
           number: 3000
 ---
