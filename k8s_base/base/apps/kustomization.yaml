@@ -5,4 +5,4 @@ resources:
 #- private_key.yaml
 - repositories.yaml
 - app_website.yaml
-#- app_gitea.yaml
+- app_gitea.yaml

@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gitea
+spec:
+  hosts:
+  - gitea.nuts.yantao0527.me
+  gateways:
+  - http-gateway
+  - https-gateway
+  http:
+  - route:
+    - destination:
+        host: git-gitea-http
+        port:
+          number: 3000
+---

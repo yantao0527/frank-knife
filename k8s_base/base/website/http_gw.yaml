@@ -16,4 +16,5 @@ spec:
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me
     - tracing.nuts.yantao0527.me
+    - gitea.nuts.yantao0527.me
 ---

@@ -11,10 +11,9 @@ service:
 ingress:
   enabled: false
   hosts:
-    - gitea.z01.yantao0527.me
+    - gitea.nuts.yantao0527.me
   tls:
-    - secretName: tls-yantao0527
-      hosts:
-        - gitea.z01.yantao0527.me
+    - hosts:
+        - gitea.nuts.yantao0527.me
 
 

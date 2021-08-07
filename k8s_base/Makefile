@@ -12,7 +12,7 @@ argocd-password: argocd-password-
 	@echo "3. make argocd-update-password"
 	@echo "4. 重新注释掉Makefile中口令"
 
-ARGOCD_PASSWORD=TphShiXnByfCBBEk
+ARGOCD_PASSWORD=foxXDYlLGljtfRZI
 
 argocd-pre:
 	kubectl create namespace argocd
@@ -21,7 +21,9 @@ argocd-pre:
 argocd-base:
 	kubectl -n argocd apply -k base/argocd
 
-argocd: argocd-pre argocd-base
+argocd: argocd-pre argocd-base argocd-tls
+
+argocd-post: argocd-login argocd-update-password
 
 argocd-kustomize:
 	kubectl kustomize base/argocd > special/common/argocd/argocd.yaml
@@ -52,10 +54,15 @@ website-pre:
 	kubectl create namespace website
 	kubectl label namespace website istio-injection=enabled
 
-website-apply:
-	kubectl -n website apply -f base/website/website.yaml
+website-tls:
+	kubectl -n istio-system create secret tls website-tls \
+	  --key certs/$(DOMAIN)/privkey.pem \
+	  --cert certs/$(DOMAIN)/fullchain.pem
 
-website: website-pre website-apply
+website-base:
+	kubectl -n website apply -k base/website
+
+website: website-pre website-base website-tls
 
 website-delete:
 	kubectl delete namespace website
@@ -74,11 +81,6 @@ website-argocd:
 	  --dest-server https://kubernetes.default.svc \
 	  --dest-namespace website
 
-website-tls:
-	kubectl -n istio-system create secret tls website-tls \
-	  --key certs/$(DOMAIN)/privkey.pem \
-	  --cert certs/$(DOMAIN)/fullchain.pem
-
 
 ## gitea
 
@@ -92,7 +94,7 @@ gitea-base:
 gitea-build:
 	rm -rf special/common/gitea
 	mkdir special/common/gitea
-	helmfile --file base/gitea/helmfile_gitea.yaml template --include-crds --output-dir-template special/common/gitea
+	helmfile --file base/gitea/helmfile_gitea.yaml template --include-crds --output-dir-template $(PWD)/special/common
 
 gitea-special:
 	kubectl -n git apply -f special/common/gitea

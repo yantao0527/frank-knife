@@ -93,6 +93,22 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
+  name: gitea-gateway-tcp
+  namespace: website
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: tcp-gitea-ssh
+      number: 32022
+      protocol: TCP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
   name: http-gateway
   namespace: website
 spec:
@@ -105,6 +121,7 @@ spec:
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me
     - tracing.nuts.yantao0527.me
+    - gitea.nuts.yantao0527.me
     port:
       name: http2
       number: 80
@@ -125,6 +142,7 @@ spec:
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me
     - tracing.nuts.yantao0527.me
+    - gitea.nuts.yantao0527.me
     port:
       name: https-tls
       number: 443
@@ -161,6 +179,43 @@ spec:
         host: kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local
         port:
           number: 443
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gitea
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - gitea.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: git-gitea-http
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gitea-tcp
+  namespace: website
+spec:
+  gateways:
+  - gitea-gateway-tcp
+  hosts:
+  - '*'
+  tcp:
+  - match:
+    - port: 32022
+    route:
+    - destination:
+        host: git-gitea-ssh
+        port:
+          number: 32022
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

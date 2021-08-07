@@ -6,3 +6,6 @@ resources:
 - https_gw.yaml
 - addons_vs.yaml
 - dashboard_vs.yaml
+- gitea_vs.yaml
+- gitea_gateway_tcp.yaml
+
