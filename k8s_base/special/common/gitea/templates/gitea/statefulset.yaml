@@ -1,0 +1,106 @@
+---
+# Source: gitea/templates/gitea/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: git-gitea
+  labels:
+    helm.sh/chart: gitea-2.2.2
+    app: gitea
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
+    app.kubernetes.io/version: "1.13.2"
+    version: "1.13.2"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gitea
+      app.kubernetes.io/instance: git
+  serviceName: git-gitea
+  template:
+    metadata:
+      annotations:
+        checksum/config: 992cdaaaaf225486e9ceefd3901e911195210c9d2677944aab2afe2028b45c48
+        checksum/ldap: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+        checksum/oauth: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      labels:
+        helm.sh/chart: gitea-2.2.2
+        app: gitea
+        app.kubernetes.io/name: gitea
+        app.kubernetes.io/instance: git
+        app.kubernetes.io/version: "1.13.2"
+        version: "1.13.2"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: init
+          image: "gitea/gitea:1.13.2"
+          command: ["/usr/sbin/init_gitea.sh"]
+          env:
+          volumeMounts:
+            - name: init
+              mountPath: /usr/sbin
+            - name: config
+              mountPath: /etc/gitea/conf
+            - name: data
+              mountPath: /data
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: gitea
+          image: "gitea/gitea:1.13.2"
+          imagePullPolicy: Always
+          env:
+            # SSH Port values have to be set here as well for openssh configuration
+            - name: SSH_LISTEN_PORT
+              value: "32022"
+            - name: SSH_PORT
+              value: "32022"
+          ports:
+            - name: ssh
+              containerPort: 32022
+            - name: http
+              containerPort: 3000
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            {}
+          securityContext:
+            {}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: init
+          secret:
+            secretName: git-gitea-init
+            defaultMode: 0777
+        - name: config
+          secret:
+            secretName: git-gitea
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+            - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "10Gi"

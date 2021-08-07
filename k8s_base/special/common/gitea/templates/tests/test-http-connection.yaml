@@ -1,0 +1,24 @@
+---
+# Source: gitea/templates/tests/test-http-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "git-gitea-test-connection"
+  labels:
+
+    helm.sh/chart: gitea-2.2.2
+    app: gitea
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
+    app.kubernetes.io/version: "1.13.2"
+    version: "1.13.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['git-gitea-http:3000']
+  restartPolicy: Never

@@ -1,0 +1,46 @@
+---
+# Source: gitea/templates/gitea/config.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-gitea
+  labels:
+    helm.sh/chart: gitea-2.2.2
+    app: gitea
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
+    app.kubernetes.io/version: "1.13.2"
+    version: "1.13.2"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+stringData:
+  app.ini: |-
+
+    [cache]
+    ADAPTER = memcache
+    ENABLED = true
+    HOST = git-memcached.git.svc.cluster.local:11211
+
+    [database]
+    DB_TYPE = postgres
+    HOST = git-postgresql.git.svc.cluster.local:5432
+    NAME = gitea
+    PASSWD = gitea
+    USER = gitea
+
+    [metrics]
+    ENABLED = false
+
+    [security]
+    INSTALL_LOCK = true
+
+    [server]
+    APP_DATA_PATH = /data
+    DOMAIN = gitea.nuts.yantao0527.me
+    ENABLE_PPROF = false
+    HTTP_PORT = 3000
+    PROTOCOL = http
+    ROOT_URL = http://gitea.nuts.yantao0527.me
+    SSH_DOMAIN = gitea.nuts.yantao0527.me
+    SSH_LISTEN_PORT = 32022
+    SSH_PORT = 32022

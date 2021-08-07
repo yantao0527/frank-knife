@@ -1,0 +1,32 @@
+---
+# Source: gitea/templates/gitea/init.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-gitea-init
+  labels:
+    helm.sh/chart: gitea-2.2.2
+    app: gitea
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
+    app.kubernetes.io/version: "1.13.2"
+    version: "1.13.2"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+stringData:
+  init_gitea.sh: |-
+    #!/bin/bash
+
+    mkdir -p /data/git/.ssh
+    chmod -R 700 /data/git/.ssh
+    mkdir -p /data/gitea/conf
+    cp /etc/gitea/conf/app.ini /data/gitea/conf/app.ini
+    chmod a+rwx /data/gitea/conf/app.ini
+    nc -v -w2 -z git-postgresql 5432 && \
+    su git -c ' \
+    set -x; \
+    gitea migrate; \
+    gitea admin create-user --username  gitea_admin --password "r8sA8CPHD9!bt6d" --email gitea@local.domain --admin --must-change-password=false \
+    || \
+    gitea admin change-password --username gitea_admin --password "r8sA8CPHD9!bt6d"; \
+    '

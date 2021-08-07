@@ -1,0 +1,26 @@
+---
+# Source: gitea/templates/gitea/ssh-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: git-gitea-ssh
+  labels:
+    helm.sh/chart: gitea-2.2.2
+    app: gitea
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
+    app.kubernetes.io/version: "1.13.2"
+    version: "1.13.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    null
+spec:
+  type: ClusterIP
+  ports:
+  - name: ssh
+    port: 32022
+    targetPort: 32022
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: git
