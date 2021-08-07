@@ -56,10 +56,6 @@ create:
 delete:
 	k3d cluster delete nuts
 
-one-click0: k3d-network registry-volume registry0 registry-network create0
-
-one-click: k3d-network registry-volume registry registry-network create
-
 ## install rancher
 
 rancher:
@@ -76,3 +72,7 @@ rancher:
 rancher-delete:
 	docker rm -f rancher
 
+
+one-click0: k3d-network registry-volume registry0 registry-network create0 rancher
+
+one-click: k3d-network registry-volume registry registry-network create rancher
