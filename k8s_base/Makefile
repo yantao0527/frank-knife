@@ -12,7 +12,7 @@ argocd-password: argocd-password-
 	@echo "3. make argocd-update-password"
 	@echo "4. 重新注释掉Makefile中口令"
 
-ARGOCD_PASSWORD=foxXDYlLGljtfRZI
+ARGOCD_PASSWORD=UxwEfRitCHpyQRLz
 
 argocd-pre:
 	kubectl create namespace argocd
@@ -23,7 +23,7 @@ argocd-base:
 
 argocd: argocd-pre argocd-base argocd-tls
 
-argocd-post: argocd-login argocd-update-password
+argocd-post: argocd-login argocd-update-password argocd-gateway
 
 argocd-kustomize:
 	kubectl kustomize base/argocd > special/common/argocd/argocd.yaml
@@ -47,6 +47,9 @@ argocd-tls:
 	kubectl -n istio-system create secret tls argocd-tls \
 	  --key certs/argocd.$(DOMAIN)/privkey.pem \
 	  --cert certs/argocd.$(DOMAIN)/fullchain.pem
+
+argocd-gateway:
+	kubectl -n argocd apply -f base/argocd/argocd_gateway.yaml
 
 #== website ===
 

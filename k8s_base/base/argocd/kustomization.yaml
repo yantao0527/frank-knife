@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: argocd
 resources:
   - argocd_install.yaml
-  - argocd_gateway.yaml
+#  - argocd_gateway.yaml
 patchesStrategicMerge:
   - istio_patches.yaml
