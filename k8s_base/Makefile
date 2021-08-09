@@ -12,11 +12,19 @@ argocd-password: argocd-password-
 	@echo "3. make argocd-update-password"
 	@echo "4. 重新注释掉Makefile中口令"
 
-ARGOCD_PASSWORD=UxwEfRitCHpyQRLz
+ARGOCD_PASSWORD=wGCVCcGIVlvivAsJ
 
 argocd-pre:
 	kubectl create namespace argocd
 	kubectl label namespace argocd istio-injection=enabled --overwrite
+
+argocd-tls:
+	kubectl -n istio-system create secret tls argocd-tls \
+	  --key certs/argocd.$(DOMAIN)/privkey.pem \
+	  --cert certs/argocd.$(DOMAIN)/fullchain.pem
+
+argocd-gateway:
+	kubectl -n argocd apply -f base/argocd/argocd_gateway.yaml
 
 argocd-base:
 	kubectl -n argocd apply -k base/argocd
@@ -34,6 +42,10 @@ argocd-special:
 argocd-delete:
 	kubectl delete namespace argocd
 	
+#--- argocd-apps ---
+
+argocd-apps-pre: website-pre website-tls
+
 argocd-apps-base:
 	kubectl -n argocd apply -k base/apps
 	
@@ -43,14 +55,6 @@ argocd-apps-kustomize:
 argocd-apps-special:
 	kubectl -n argocd apply -f special/${SPECIAL_TARGET}/apps/apps.yaml
 	
-argocd-tls:
-	kubectl -n istio-system create secret tls argocd-tls \
-	  --key certs/argocd.$(DOMAIN)/privkey.pem \
-	  --cert certs/argocd.$(DOMAIN)/fullchain.pem
-
-argocd-gateway:
-	kubectl -n argocd apply -f base/argocd/argocd_gateway.yaml
-
 #== website ===
 
 website-pre:
