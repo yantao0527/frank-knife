@@ -4,6 +4,7 @@ configMapGenerator:
 - name: nginx-html
   files:
   - html/index.html
+  - html/jenkinsx.html
   - html/8ZV2hlViEt.txt
 generatorOptions:
   disableNameSuffixHash: true
