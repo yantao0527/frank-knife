@@ -20,3 +20,8 @@ data "alicloud_instance_types" "c2g8" {
   memory_size          = 8
 }
 
+data "alicloud_instance_types" "c4g16" {
+  instance_type_family = "ecs.t5"
+  cpu_core_count       = 4
+  memory_size          = 16
+}
