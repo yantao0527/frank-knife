@@ -44,9 +44,7 @@ argocd-delete:
 	
 #--- argocd-apps ---
 
-argocd-apps-pre: website-pre website-tls
-
-argocd-apps-base:
+argocd-apps-base: website-pre website-tls gitea-pre
 	kubectl -n argocd apply -k base/apps
 	
 argocd-apps-kustomize:
@@ -119,6 +117,9 @@ gitea-gateway:
 gitea-gateway-tcp:
 	kubectl apply -f gitea_gateway_tcp.yaml -n git
 	
+gitea-delete:
+	kubectl delete namespace git
+
 
 ## leasing
 
