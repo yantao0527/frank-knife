@@ -58,13 +58,16 @@ delete:
 
 ## install rancher
 
+#CERT_PATH=$(PWD)/../../k8s_base/certs/nuts.yantao0527.me
+CERT_PATH=$(PWD)/../../k8s_base/certs/z01.yantao0527.me
+
 rancher:
 	docker run -d --name rancher \
 	  --restart=unless-stopped \
 	  -p 8080:80 \
 	  -p 8443:443 \
-	  -v ${PWD}/ssl/fullchain.pem:/etc/rancher/ssl/cert.pem \
-	  -v ${PWD}/ssl/privkey.pem:/etc/rancher/ssl/key.pem \
+	  -v $(CERT_PATH)/fullchain.pem:/etc/rancher/ssl/cert.pem \
+	  -v $(CERT_PATH)/privkey.pem:/etc/rancher/ssl/key.pem \
 	  --privileged \
 	  rancher/rancher \
 	  --no-cacerts
