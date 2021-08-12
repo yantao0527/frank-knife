@@ -30,7 +30,7 @@ install-cert:
 	-sudo mkdir out/nginx
 	docker run --rm  -it  \
 		-v "$(PWD)/out":/acme.sh  \
-		$(ACME_IMAGE) --install-cert --log -d nuts.yantao0527.me \
+		$(ACME_IMAGE) --install-cert --log -d nuts.$(DOMAIN) \
 		--key-file /acme.sh/nginx/privkey.pem \
 		--fullchain-file /acme.sh/nginx/fullchain.pem
 	sudo cp out/nginx/*.pem ../k8s_base/certs/nuts.yantao0527.me
