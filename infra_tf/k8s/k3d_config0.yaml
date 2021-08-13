@@ -12,6 +12,9 @@ ports:
   - port: 443:443           # https
     nodeFilters:
       - loadbalancer
+  - port: 8200:8200         # vault ui
+    nodeFilters:
+      - loadbalancer
   - port: 32022:32022       # gitea ssh
     nodeFilters:
       - loadbalancer

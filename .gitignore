@@ -17,4 +17,4 @@ infra_tf/ali_ecs/id_rsa.pub
 infra_tf/ali_ecs/remote.sh
 infra_tf/ali_ecs/playbook.sh
 
-seeker/secret/cluster_key.json
+seeker/secret/cluster_keys.json
