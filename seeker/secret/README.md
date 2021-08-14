@@ -1,3 +1,12 @@
+## Kubernetes deploy
+
+- Standalone (default): a single Vault server persisting to a volume using the file storage backend
+- High-Availability (HA): a cluster of Vault servers that use an HA storage backend such as Consul (default)
+
+## expose
+
+- Why ingress configuration is not working?
+- LoadBalancer is working well.
 ## Configure Kubernetes authentication
 
 Enable the Kubernetes authentication method.
