@@ -42,7 +42,7 @@ root-token:
 vault-login:
 	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
 
-secrets-enable:
+kv-enable:
 	kubectl -n vault exec vault-0 -- vault secrets enable -path=secret kv-v2
 
 kv-put:
@@ -55,3 +55,21 @@ kv-get:
 # reference: README.md
 vault-kubernetes:
 	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+
+repo-external-secrets:
+	helm repo add external-secrets https://external-secrets.github.io/kubernetes-external-secrets/
+	helm repo update
+
+external-secrets:
+	helm install external-secrets external-secrets/kubernetes-external-secrets \
+	  --namespace vault \
+	  --values helm_external_secrets_values.yml
+
+apply-es:
+	kubectl -n vault apply -f demo_vault_es.yml
+
+status-es:
+	kubectl -n vault get es demo-vault-es
+
+delete-es:
+	kubectl -n vault delete es demo-vault-es

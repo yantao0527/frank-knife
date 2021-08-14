@@ -26,7 +26,7 @@ Success! Data written to: auth/kubernetes/config
 Write out the policy named webapp that enables the read capability for secrets at path secret/data/webapp/config.
 ```
 vault policy write webapp - <<EOF
-path "secret/data/webapp/config" {
+path "secret/webapp/config" {
   capabilities = ["read"]
 }
 EOF
@@ -37,8 +37,19 @@ Create a Kubernetes authentication role, named webapp, that connects the Kuberne
 ```
 vault write auth/kubernetes/role/webapp \
         bound_service_account_names=vault \
-        bound_service_account_namespaces=default \
+        bound_service_account_namespaces=vault \
         policies=webapp \
         ttl=24h
 Success! Data written to: auth/kubernetes/role/webapp
 ```
+
+kubernetes-external-secrets
+```
+vault write auth/kubernetes/role/webapp \
+        bound_service_account_names=external-secrets-kubernetes-external-secrets \
+        bound_service_account_namespaces=vault \
+        policies=webapp \
+        ttl=24h
+Success! Data written to: auth/kubernetes/role/webapp
+```
+
