@@ -62,7 +62,7 @@ repo-external-secrets:
 
 external-secrets:
 	helm install external-secrets external-secrets/kubernetes-external-secrets \
-	  --namespace vault \
+	  --namespace vault --create-namespace \
 	  --values helm_external_secrets_values.yml
 
 apply-es:

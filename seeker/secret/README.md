@@ -26,7 +26,7 @@ Success! Data written to: auth/kubernetes/config
 Write out the policy named webapp that enables the read capability for secrets at path secret/data/webapp/config.
 ```
 vault policy write webapp - <<EOF
-path "secret/webapp/config" {
+path "secret/data/webapp/config" {
   capabilities = ["read"]
 }
 EOF
@@ -36,16 +36,6 @@ Success! Uploaded policy: webapp
 Create a Kubernetes authentication role, named webapp, that connects the Kubernetes service account name and webapp policy.
 ```
 vault write auth/kubernetes/role/webapp \
-        bound_service_account_names=vault \
-        bound_service_account_namespaces=vault \
-        policies=webapp \
-        ttl=24h
-Success! Data written to: auth/kubernetes/role/webapp
-```
-
-kubernetes-external-secrets
-```
-vault write auth/kubernetes/role/webapp \
         bound_service_account_names=external-secrets-kubernetes-external-secrets \
         bound_service_account_namespaces=vault \
         policies=webapp \
@@ -53,3 +43,6 @@ vault write auth/kubernetes/role/webapp \
 Success! Data written to: auth/kubernetes/role/webapp
 ```
 
+## 备忘
+
+When ExternalSecret access vault, the full path of the secret must include subpath /data, just like the configuration in the policy. But command 'vault kv get secret/webapp/config' needn't include subpath /data.
