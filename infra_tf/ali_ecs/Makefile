@@ -96,5 +96,6 @@ kubeconfig-dns:
 	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
 	@echo "$(shell make node-eip)    nuts.yantao0527.me"
 
-clean-known-hosts:
+remote:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
+	ssh -i ./id_rsa trial@$(shell terraform output node_eip)
