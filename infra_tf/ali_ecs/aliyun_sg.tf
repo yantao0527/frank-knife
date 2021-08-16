@@ -82,6 +82,17 @@ resource "alicloud_security_group_rule" "accept_rancher_http_rule" {
   description       = "rancher http"
 }
 
+resource "alicloud_security_group_rule" "accept_vault_ui_rule" {
+  type              = "ingress"
+  ip_protocol       = "tcp"
+  policy            = "accept"
+  port_range        = "8200/8200"
+  priority          = 100
+  security_group_id = alicloud_security_group.group.id
+  cidr_ip           = "0.0.0.0/0"
+  description       = "vault ui"
+}
+
 resource "alicloud_security_group_rule" "accept_rancher_https_rule" {
   type              = "ingress"
   ip_protocol       = "tcp"
