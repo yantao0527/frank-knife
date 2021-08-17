@@ -40,7 +40,9 @@ argocd-delete:
 	
 #--- argocd-apps ---
 
-argocd-apps-base: website-pre website-tls gitea-pre
+argocd-apps-base: website-pre website-tls gitea-pre argocd-apps-base-
+
+argocd-apps-base-:
 	kubectl -n argocd apply -k base/apps
 	
 argocd-apps-kustomize:
