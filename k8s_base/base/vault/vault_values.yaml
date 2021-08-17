@@ -1,0 +1,21 @@
+## Disable vault agent injection
+##
+injector:
+  enabled: false
+
+server:
+  affinity: ""
+  # ingress:
+  #   enabled: true
+  #   annotations:
+  #     kubernetes.io/ingress.class: istio
+  #   hosts:
+  #     - host: vault.z01.yantao0527.me
+  #       paths: ["/"]
+
+# Vault UI
+ui:
+  enabled: true
+  serviceType: "LoadBalancer"
+  serviceNodePort: null
+  externalPort: 8200

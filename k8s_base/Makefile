@@ -6,14 +6,6 @@ include Makefile.mk
 
 ## argocd
 
-argocd-password: argocd-password-
-	@echo "1. 把前一行初始口令设置到Makefile中"
-	@echo "2. make argocd-login"
-	@echo "3. make argocd-update-password"
-	@echo "4. 重新注释掉Makefile中口令"
-
-ARGOCD_PASSWORD=wGCVCcGIVlvivAsJ
-
 argocd-pre:
 	kubectl create namespace argocd
 	kubectl label namespace argocd istio-injection=enabled --overwrite
@@ -31,7 +23,7 @@ argocd-base:
 
 argocd: argocd-pre argocd-base argocd-tls
 
-argocd-post: argocd-login argocd-update-password argocd-gateway
+argocd-post: argocd-password argocd-login argocd-update-password argocd-gateway
 
 argocd-kustomize:
 	kubectl kustomize base/argocd > special/common/argocd/argocd.yaml
@@ -39,8 +31,12 @@ argocd-kustomize:
 argocd-special:
 	kubectl -n argocd apply -f special/common/argocd/argocd.yaml
 	
+argocd-status:
+	kubectl -n argocd get pod
+
 argocd-delete:
 	kubectl delete namespace argocd
+	kubectl -n istio-system delete secret argocd-tls
 	
 #--- argocd-apps ---
 
@@ -86,7 +82,59 @@ website-argocd:
 	  --dest-server https://kubernetes.default.svc \
 	  --dest-namespace website
 
+## vault
 
+vault-pre:
+	kubectl create namespace vault
+
+vault-base:
+	helmfile --file base/vault/helmfile_vault.yaml apply
+
+vault-build:
+	rm -rf special/common/vault
+	mkdir special/common/vault
+	helmfile --file base/vault/helmfile_vault.yaml template --include-crds --output-dir-template $(PWD)/special/common
+
+vault-delete:
+	kubectl delete namespace vault
+
+vault-status:
+	kubectl -n vault exec vault-0 -- vault status
+
+vault-init:
+	kubectl -n vault exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > cluster_keys.json
+
+cluster-key:
+	cat cluster_keys.json | jq -r ".unseal_keys_b64[]"
+
+vault-unseal:
+	kubectl -n vault exec vault-0 -- vault operator unseal $(shell cat cluster_keys.json | jq -r ".unseal_keys_b64[]")
+
+root-token:
+	cat cluster_keys.json | jq -r ".root_token"
+
+vault-argocd: vault-pre
+	kubectl apply -f base/vault/app_vault.yaml
+
+# Please run: vault login
+vault-login:
+	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+
+kv-enable:
+	kubectl -n vault exec vault-0 -- vault secrets enable -path=secret kv-v2
+
+kv-put:
+	kubectl -n vault exec vault-0 -- vault kv put secret/webapp/config username="frank" password="frank123"
+
+kv-get:
+	kubectl -n vault exec vault-0 -- vault kv get secret/webapp/config
+
+# kubernetes authentication
+# reference: README.md
+vault-kubernetes:
+	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+
+	
 ## gitea
 
 gitea-pre:

@@ -45,14 +45,14 @@ argocd-cli:
 	sudo curl -sSL -o /usr/local/bin/argocd ${ARGOCD_DOWNLOAD}
 	sudo chmod +x /usr/local/bin/argocd
 
-argocd-password-:
-	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+argocd-password:
+	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > argocd_password.txt
 
 argocd-login:
-	argocd login ${ARGOCD_SERVER} --port-forward-namespace argocd --username admin --password ${ARGOCD_PASSWORD}
+	argocd login ${ARGOCD_SERVER} --port-forward-namespace argocd --username admin --password ${shell cat argocd_password.txt}
 
 argocd-update-password:
-	argocd account update-password --port-forward-namespace argocd --current-password ${ARGOCD_PASSWORD} --new-password admin123
+	argocd account update-password --port-forward-namespace argocd --current-password ${shell cat argocd_password.txt} --new-password admin123
 
 
 ## loki
