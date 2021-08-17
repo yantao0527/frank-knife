@@ -17,4 +17,7 @@ infra_tf/ali_ecs/id_rsa.pub
 infra_tf/ali_ecs/remote.sh
 infra_tf/ali_ecs/playbook.sh
 
+k8s_base/argocd_password.txt
+k8s_base/cluster_keys.json
+
 seeker/secret/cluster_keys.json
