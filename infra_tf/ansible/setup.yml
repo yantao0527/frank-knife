@@ -13,7 +13,6 @@
     - trial
     - docker
     - kubectl
-    - kind
     - k3d
     - jx
     - helm
