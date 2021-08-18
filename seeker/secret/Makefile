@@ -73,3 +73,33 @@ status-es:
 
 delete-es:
 	kubectl -n vault delete es demo-vault-es
+
+## vault operator
+
+vault-operator-repo:
+	helm repo add banzaicloud https://kubernetes-charts.banzaicloud.com
+	helm repo update
+
+vault-operator:
+	helm upgrade --install vault-operator banzaicloud/vault-operator \
+	  --namespace vault --create-namespace \
+	  --version 1.13.2
+
+vault-operator-cr:
+	kubectl -n vault apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/rbac.yaml
+	kubectl -n vault apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/cr.yaml
+
+vault-instance-repo:
+	helm repo add jxgh https://jenkins-x-charts.github.io/repo
+	helm repo update
+
+vault-instance:
+	helm upgrade --install vault-instance jxgh/vault-instance \
+	  --namespace vault --create-namespace \
+	  --values helm_vault_instance_values.yml
+
+vault-instance-template:
+	helm template vault-instance jxgh/vault-instance \
+	  --namespace vault --create-namespace \
+	  --values helm_vault_instance_values.yml \
+	  --output-dir output 
