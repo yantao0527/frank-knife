@@ -87,7 +87,7 @@ website-argocd:
 ## vault
 
 vault-pre:
-	kubectl create namespace vault
+	kubectl create namespace jx-vault
 
 vault-base:
 	helmfile --file base/vault/helmfile_vault.yaml apply
@@ -95,22 +95,22 @@ vault-base:
 vault-build:
 	rm -rf special/common/vault
 	mkdir special/common/vault
-	helmfile --file base/vault/helmfile_vault.yaml template --include-crds --output-dir-template $(PWD)/special/common
+	helmfile --file base/vault/helmfile_vault.yaml template --include-crds --output-dir-template $(PWD)/special/common/vault
 
 vault-delete:
-	kubectl delete namespace vault
+	kubectl delete namespace jx-vault
 
 vault-status:
-	kubectl -n vault exec vault-0 -- vault status
+	kubectl -n jx-vault exec vault-0 -- vault status
 
 vault-init:
-	kubectl -n vault exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > cluster_keys.json
+	kubectl -n jx-vault exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > cluster_keys.json
 
 cluster-key:
 	cat cluster_keys.json | jq -r ".unseal_keys_b64[]"
 
 vault-unseal:
-	kubectl -n vault exec vault-0 -- vault operator unseal $(shell cat cluster_keys.json | jq -r ".unseal_keys_b64[]")
+	kubectl -n jx-vault exec vault-0 -- vault operator unseal $(shell cat cluster_keys.json | jq -r ".unseal_keys_b64[]")
 
 root-token:
 	cat cluster_keys.json | jq -r ".root_token"
@@ -120,21 +120,21 @@ vault-argocd: vault-pre
 
 # Please run: vault login
 vault-login:
-	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+	kubectl -n jx-vault exec --stdin=true --tty=true vault-0 -- /bin/sh
 
 kv-enable:
-	kubectl -n vault exec vault-0 -- vault secrets enable -path=secret kv-v2
+	kubectl -n jx-vault exec vault-0 -- vault secrets enable -path=secret kv-v2
 
 kv-put:
-	kubectl -n vault exec vault-0 -- vault kv put secret/webapp/config username="frank" password="frank123"
+	kubectl -n jx-vault exec vault-0 -- vault kv put secret/webapp/config username="frank" password="frank123"
 
 kv-get:
-	kubectl -n vault exec vault-0 -- vault kv get secret/webapp/config
+	kubectl -n jx-vault exec vault-0 -- vault kv get secret/webapp/config
 
 # kubernetes authentication
 # reference: README.md
 vault-kubernetes:
-	kubectl -n vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+	kubectl -n jx-vault exec --stdin=true --tty=true vault-0 -- /bin/sh
 
 	
 ## gitea

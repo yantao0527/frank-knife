@@ -1,10 +1,15 @@
-namespace: vault
+namespace: jx-vault
 repositories:
-- name: hashicorp
-  url: https://helm.releases.hashicorp.com
+- name: banzaicloud
+  url: https://kubernetes-charts.banzaicloud.com
+- name: jxgh
+  url: https://jenkins-x-charts.github.io/repo
 releases:
-- chart: hashicorp/vault
-  version: 0.14.0
-  name: vault
+- chart: banzaicloud/vault-operator
+  version: 1.13.2
+  name: vault-operator
+- chart: jxgh/vault-instance
+  version: 1.0.20
+  name: vault-instance
   values:
-  - vault_values.yaml
+  - vault_instance_values.yaml
