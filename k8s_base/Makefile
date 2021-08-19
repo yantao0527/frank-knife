@@ -86,8 +86,11 @@ website-argocd:
 
 ## vault
 
+VAULT_NAMESPACE=jx-vault
+
 vault-pre:
 	kubectl create namespace jx-vault
+	kubectl label namespace jx-vault istio-injection=enabled
 
 vault-base:
 	helmfile --file base/vault/helmfile_vault.yaml apply
@@ -96,45 +99,26 @@ vault-build:
 	rm -rf special/common/vault
 	mkdir special/common/vault
 	helmfile --file base/vault/helmfile_vault.yaml template --include-crds --output-dir-template $(PWD)/special/common/vault
+	cp base/vault/expose_vault_ui.yaml $(PWD)/special/common/vault
+
+vault-special:
+	kubectl -n jx-vault apply -f special/common/vault --recursive=true
 
 vault-delete:
-	kubectl delete namespace jx-vault
+	helmfile --file base/vault/helmfile_vault.yaml destroy
 
-vault-status:
-	kubectl -n jx-vault exec vault-0 -- vault status
+#	kubectl delete namespace jx-vault
 
-vault-init:
-	kubectl -n jx-vault exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > cluster_keys.json
+# vault-status:
+# 	kubectl -n jx-vault exec vault-0 -- vault status
 
-cluster-key:
-	cat cluster_keys.json | jq -r ".unseal_keys_b64[]"
+vault-ca:
+	kubectl -n $(VAULT_NAMESPACE) get secret vault-tls \
+	  -o jsonpath="{.data.ca\.crt}" | base64 --decode > $(PWD)/vault_ca.crt
 
-vault-unseal:
-	kubectl -n jx-vault exec vault-0 -- vault operator unseal $(shell cat cluster_keys.json | jq -r ".unseal_keys_b64[]")
-
-root-token:
-	cat cluster_keys.json | jq -r ".root_token"
-
-vault-argocd: vault-pre
-	kubectl apply -f base/vault/app_vault.yaml
-
-# Please run: vault login
-vault-login:
-	kubectl -n jx-vault exec --stdin=true --tty=true vault-0 -- /bin/sh
-
-kv-enable:
-	kubectl -n jx-vault exec vault-0 -- vault secrets enable -path=secret kv-v2
-
-kv-put:
-	kubectl -n jx-vault exec vault-0 -- vault kv put secret/webapp/config username="frank" password="frank123"
-
-kv-get:
-	kubectl -n jx-vault exec vault-0 -- vault kv get secret/webapp/config
-
-# kubernetes authentication
-# reference: README.md
-vault-kubernetes:
-	kubectl -n jx-vault exec --stdin=true --tty=true vault-0 -- /bin/sh
+vault-root-token:
+	kubectl -n $(VAULT_NAMESPACE) get secrets vault-unseal-keys \
+	  -o jsonpath={.data.vault-root} | base64 --decode && echo
 
 	
 ## gitea

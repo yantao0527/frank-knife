@@ -1,5 +1,10 @@
+bankVaultsImage: ghcr.io/banzaicloud/bank-vaults:latest
+image: vault:1.6.2
+
 ingress:
   enabled: false
+  annotation: {}
+  spec: {}
   # annotations:
   #   kubernetes.io/ingress.class: istio
   # spec:
@@ -9,5 +14,7 @@ ingress:
   #         paths:
   #           - path: /
   #             backend:
-  #               serviceName: vault
-  #               servicePort: 8200
+  #               service:
+  #                 name: vault
+  #                 port:
+  #                   number: 8200
