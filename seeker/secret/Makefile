@@ -18,6 +18,12 @@ vault:
 	  --namespace vault --create-namespace \
 	  --values helm_vault_values.yml
 
+vault-template:
+	helm template vault hashicorp/vault \
+	  --namespace vault --create-namespace \
+	  --values helm_vault_values.yml \
+	  --output-dir output
+	  
 vault-status:
 	kubectl -n vault exec vault-0 -- vault status
 
@@ -76,18 +82,27 @@ delete-es:
 
 ## vault operator
 
+VAULT_NAMESPACE=vault
+
+vault-pre:
+	kubectl create namespace $(VAULT_NAMESPACE)
+	kubectl label namespace $(VAULT_NAMESPACE) istio-injection=enabled
+
 vault-operator-repo:
 	helm repo add banzaicloud https://kubernetes-charts.banzaicloud.com
 	helm repo update
 
 vault-operator:
 	helm upgrade --install vault-operator banzaicloud/vault-operator \
-	  --namespace vault --create-namespace \
+	  --namespace $(VAULT_NAMESPACE) --create-namespace \
 	  --version 1.13.2
 
+vault-operator-delete:
+	helm --namespace $(VAULT_NAMESPACE) delete vault-operator
+
 vault-operator-cr:
-	kubectl -n vault apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/rbac.yaml
-	kubectl -n vault apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/cr.yaml
+	kubectl -n $(VAULT_NAMESPACE) apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/rbac.yaml
+	kubectl -n $(VAULT_NAMESPACE) apply -f https://raw.githubusercontent.com/banzaicloud/bank-vaults/master/operator/deploy/cr.yaml
 
 vault-instance-repo:
 	helm repo add jxgh https://jenkins-x-charts.github.io/repo
@@ -95,11 +110,25 @@ vault-instance-repo:
 
 vault-instance:
 	helm upgrade --install vault-instance jxgh/vault-instance \
-	  --namespace vault --create-namespace \
+	  --namespace $(VAULT_NAMESPACE) --create-namespace \
 	  --values helm_vault_instance_values.yml
 
+vault-instance-ui:
+	kubectl -n $(VAULT_NAMESPACE) apply -f ui_vault_instance.yaml
+
+vault-instance-delete:
+	helm --namespace $(VAULT_NAMESPACE) delete vault-instance
+	
 vault-instance-template:
 	helm template vault-instance jxgh/vault-instance \
-	  --namespace vault --create-namespace \
+	  --namespace $(VAULT_NAMESPACE) --create-namespace \
 	  --values helm_vault_instance_values.yml \
-	  --output-dir output 
+	  --output-dir output
+
+vault-ca:
+	kubectl -n $(VAULT_NAMESPACE) get secret vault-tls \
+	  -o jsonpath="{.data.ca\.crt}" | base64 --decode > $(PWD)/vault_ca.crt
+
+vault-root-token:
+	kubectl -n $(VAULT_NAMESPACE) get secrets vault-unseal-keys \
+	  -o jsonpath={.data.vault-root} | base64 --decode && echo
