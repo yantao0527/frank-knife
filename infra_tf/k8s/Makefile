@@ -58,8 +58,8 @@ delete:
 
 ## install rancher
 
-#CERT_PATH=$(PWD)/../../k8s_base/certs/nuts.yantao0527.me
-CERT_PATH=$(PWD)/../../k8s_base/certs/z01.yantao0527.me
+CERT_PATH=$(PWD)/../../k8s_base/certs/nuts.yantao0527.me
+#CERT_PATH=$(PWD)/../../k8s_base/certs/z01.yantao0527.me
 
 rancher:
 	docker run -d --name rancher \
