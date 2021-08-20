@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: vault
+    namespace: jx-vault
     server: https://kubernetes.default.svc
   project: nuts
   source:

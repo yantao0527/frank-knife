@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: 'git'
     server: https://kubernetes.default.svc
-  - namespace: 'vault'
+  - namespace: 'jx-vault'
     server: https://kubernetes.default.svc
   sourceRepos:
   - https://github.com/yantao0527/frank-knife.git
