@@ -95,6 +95,9 @@ vault-pre:
 vault-base:
 	helmfile --file base/vault/helmfile_vault.yaml apply
 
+vault-base-delete:
+	helmfile --file base/vault/helmfile_vault.yaml destroy
+
 vault-build:
 	rm -rf special/common/vault
 	mkdir special/common/vault
@@ -105,12 +108,8 @@ vault-special:
 	kubectl -n jx-vault apply -f special/common/vault --recursive=true
 
 vault-delete:
-	helmfile --file base/vault/helmfile_vault.yaml destroy
-
-#	kubectl delete namespace jx-vault
-
-# vault-status:
-# 	kubectl -n jx-vault exec vault-0 -- vault status
+	kubectl -n jx-vault delete -f special/common/vault --recursive=true
+	kubectl delete namespace jx-vault
 
 vault-ca:
 	kubectl -n $(VAULT_NAMESPACE) get secret vault-tls \
@@ -120,7 +119,9 @@ vault-root-token:
 	kubectl -n $(VAULT_NAMESPACE) get secrets vault-unseal-keys \
 	  -o jsonpath={.data.vault-root} | base64 --decode && echo
 
-	
+vault-argocd-app: vault-pre
+	kubectl apply -f base/vault/app_vault.yaml
+
 ## gitea
 
 gitea-pre:
