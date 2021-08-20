@@ -132,3 +132,20 @@ vault-ca:
 vault-root-token:
 	kubectl -n $(VAULT_NAMESPACE) get secrets vault-unseal-keys \
 	  -o jsonpath={.data.vault-root} | base64 --decode && echo
+
+## demo-es inside secret-infra
+
+apply-demo:
+	kubectl -n secret-infra apply -f demo_es.yml
+
+status-demo:
+	kubectl -n secret-infra get es demo-es
+
+delete-demo:
+	kubectl -n secret-infra delete es demo-es
+
+external-secret-infra:
+	helm install external-secrets external-secrets/kubernetes-external-secrets \
+	  --namespace secret-infra --create-namespace \
+	  --values helm_secret_infra_values.yml
+

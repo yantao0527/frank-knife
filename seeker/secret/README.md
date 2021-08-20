@@ -46,3 +46,6 @@ Success! Data written to: auth/kubernetes/role/webapp
 ## 备忘
 
 When ExternalSecret access vault, the full path of the secret must include subpath /data, just like the configuration in the policy. But command 'vault kv get secret/webapp/config' needn't include subpath /data.
+
+Because use the latest version of vault-operator:1.13.2 and vault-instance:1.0.20, the latest version of ExternalSecrets:8.3.0 must be used, original ExternalSecrets:6.3.0 can't work.
+
