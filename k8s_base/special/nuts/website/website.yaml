@@ -136,6 +136,7 @@ spec:
   servers:
   - hosts:
     - www.nuts.yantao0527.me
+    - argocd.nuts.yantao0527.me
     - kiali.nuts.yantao0527.me
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me
@@ -157,6 +158,7 @@ spec:
   servers:
   - hosts:
     - www.nuts.yantao0527.me
+    - argocd.nuts.yantao0527.me
     - kiali.nuts.yantao0527.me
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me
@@ -177,6 +179,24 @@ spec:
       protocol: HTTPS
     tls:
       mode: PASSTHROUGH
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: argocd
+  namespace: website
+spec:
+  gateways:
+  - http-gateway
+  - https-gateway
+  hosts:
+  - argocd.nuts.yantao0527.me
+  http:
+  - route:
+    - destination:
+        host: argocd-server.argocd.svc.cluster.local
+        port:
+          number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
