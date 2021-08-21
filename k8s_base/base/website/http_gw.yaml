@@ -12,7 +12,7 @@ spec:
       protocol: HTTP2
     hosts:
     - www.nuts.yantao0527.me
-    - argocd.nuts.yantao0527.me
+    - argocd2.nuts.yantao0527.me
     - kiali.nuts.yantao0527.me
     - prometheus.nuts.yantao0527.me
     - grafana.nuts.yantao0527.me

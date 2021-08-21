@@ -1,12 +1,12 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: argocd0
+  name: argocd
 spec:
   hosts:
-  - argocd0.nuts.yantao0527.me
+  - argocd.nuts.yantao0527.me
   gateways:
-  - argocd0-gateway
+  - argocd-gateway
   http:
   - route:
     - destination:
@@ -17,7 +17,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: argocd0-gateway
+  name: argocd-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -27,7 +27,7 @@ spec:
       name: http2
       protocol: HTTP2
     hosts:
-    - argocd0.nuts.yantao0527.me
+    - argocd.nuts.yantao0527.me
   - port:
       number: 443
       name: https-tls
@@ -36,5 +36,5 @@ spec:
       mode: SIMPLE
       credentialName: argocd-tls
     hosts:
-    - argocd0.nuts.yantao0527.me
+    - argocd.nuts.yantao0527.me
 ---
