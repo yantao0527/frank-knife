@@ -118,6 +118,14 @@ spec:
     auth:
     - roles:
       - bound_service_account_names:
+        - kubernetes-external-secrets
+        bound_service_account_namespaces:
+        - secret-infra
+        name: jx-vault
+        policies:
+        - allow_secrets
+        ttl: 1h
+      - bound_service_account_names:
         - default
         - vault-secrets-webhook
         - vault
@@ -186,6 +194,3 @@ spec:
       value: debug
     - name: VAULT_STORAGE_FILE
       value: "/vault/file"
-
-  # Marks presence of Istio, which influences things like port namings
-  istioEnabled: false

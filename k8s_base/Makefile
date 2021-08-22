@@ -122,6 +122,10 @@ vault-root-token:
 vault-argocd-app: vault-pre
 	kubectl apply -f base/vault/app_vault.yaml
 
+vault-patch:
+	# kubectl -n $(VAULT_NAMESPACE) delete service vault-ui
+	kubectl -n $(VAULT_NAMESPACE) apply -f special/common/vault/expose_vault_ui.yaml
+
 ## gitea
 
 gitea-pre:
