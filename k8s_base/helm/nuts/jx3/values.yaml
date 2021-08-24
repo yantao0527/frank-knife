@@ -1,0 +1,8 @@
+# the git URL to create the secret for
+url: "https://github.com/yantao0527/jx3-kind-vault02.git"
+
+# the git user name used to clone the git URL if its not embedded in the URL
+username: "yantao0527"
+
+# the git password used to clone the git URL if its not embedded in the URL
+password: "df06506cc58c47c8b099531a805fad171825c672"

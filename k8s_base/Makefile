@@ -126,6 +126,37 @@ vault-patch:
 	kubectl -n $(VAULT_NAMESPACE) delete service vault-ui
 	kubectl -n $(VAULT_NAMESPACE) apply -f special/common/vault/expose_vault_ui.yaml
 
+## jx3
+
+jx3-pre:
+	kubectl create namespace jx-git-operator
+
+jx3-repo:
+	helm repo add jxgh https://jenkins-x-charts.github.io/repo
+	helm repo update
+
+jx3-helm:
+	helm upgrade --install jxgo jxgh/jx-git-operator \
+	  --namespace jx-git-operator --create-namespace \
+	  --values helm/${SPECIAL_TARGET}/jx3/values.yaml
+
+jx3-build:
+	helm template jxgo jxgh/jx-git-operator \
+	  --namespace jx-git-operator --create-namespace \
+	  --values helm/${SPECIAL_TARGET}/jx3/values.yaml \
+	  --output-dir $(PWD)/special/${SPECIAL_TARGET}/jx3
+
+jx3-special:
+	kubectl -n jx-git-operator apply -f special/${SPECIAL_TARGET}/jx3 --recursive=true
+
+jx3-argocd-app: jx3-pre
+	argocd app create jx-git-operator \
+	  --port-forward-namespace argocd \
+	  --repo https://github.com/yantao0527/frank-knife.git \
+	  --path k8s_base/special/${SPECIAL_TARGET}/jx3 \
+	  --dest-server https://kubernetes.default.svc \
+	  --dest-namespace jx-git-operator
+
 ## gitea
 
 gitea-pre:
