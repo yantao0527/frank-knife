@@ -138,22 +138,24 @@ jx3-repo:
 jx3-helm:
 	helm upgrade --install jxgo jxgh/jx-git-operator \
 	  --namespace jx-git-operator --create-namespace \
-	  --values helm/${SPECIAL_TARGET}/jx3/values.yaml
+	  --values helm/${SPECIAL_TARGET}/jx-git-operator/values.yaml
 
 jx3-build:
+	rm -rf special/${SPECIAL_TARGET}/jx-git-operator
 	helm template jxgo jxgh/jx-git-operator \
 	  --namespace jx-git-operator --create-namespace \
-	  --values helm/${SPECIAL_TARGET}/jx3/values.yaml \
-	  --output-dir $(PWD)/special/${SPECIAL_TARGET}/jx3
+	  --values helm/${SPECIAL_TARGET}/jx-git-operator/values.yaml \
+	  --output-dir $(PWD)/special/${SPECIAL_TARGET}
 
 jx3-special:
-	kubectl -n jx-git-operator apply -f special/${SPECIAL_TARGET}/jx3 --recursive=true
+	kubectl -n jx-git-operator apply -f special/${SPECIAL_TARGET}/jx-git-operator --recursive=true
 
 jx3-argocd-app: jx3-pre
+	cd .. && \
 	argocd app create jx-git-operator \
 	  --port-forward-namespace argocd \
 	  --repo https://github.com/yantao0527/frank-knife.git \
-	  --path k8s_base/special/${SPECIAL_TARGET}/jx3 \
+	  --path k8s_base/special/${SPECIAL_TARGET}/jx-git-operator \
 	  --dest-server https://kubernetes.default.svc \
 	  --dest-namespace jx-git-operator
 
