@@ -154,8 +154,10 @@ jx3-argocd-app: jx3-pre
 	cd .. && \
 	argocd app create jx-git-operator \
 	  --port-forward-namespace argocd \
+	  --project nuts \
 	  --repo https://github.com/yantao0527/frank-knife.git \
 	  --path k8s_base/special/${SPECIAL_TARGET}/jx-git-operator \
+	  --directory-recurse \
 	  --dest-server https://kubernetes.default.svc \
 	  --dest-namespace jx-git-operator
 
