@@ -128,6 +128,11 @@ vault-patch:
 
 ## jx3
 
+check-token:
+ifndef GITHUB_TOKEN_JX3
+	$(error 请执行 source $$HOME/bin/env.sh 或手动配置 GITHUB_TOKEN_JX3)
+endif
+
 jx3-pre:
 	kubectl create namespace jx-git-operator
 
@@ -135,16 +140,18 @@ jx3-repo:
 	helm repo add jxgh https://jenkins-x-charts.github.io/repo
 	helm repo update
 
-jx3-helm:
+jx3-helm: check-token
 	helm upgrade --install jxgo jxgh/jx-git-operator \
 	  --namespace jx-git-operator --create-namespace \
-	  --values helm/${SPECIAL_TARGET}/jx-git-operator/values.yaml
+	  --values helm/${SPECIAL_TARGET}/jx-git-operator/values.yam \
+	  --set password=${GITHUB_TOKEN_JX3}
 
-jx3-build:
+jx3-build: check-token
 	rm -rf special/${SPECIAL_TARGET}/jx-git-operator
 	helm template jxgo jxgh/jx-git-operator \
 	  --namespace jx-git-operator --create-namespace \
 	  --values helm/${SPECIAL_TARGET}/jx-git-operator/values.yaml \
+	  --set password=${GITHUB_TOKEN_JX3} \
 	  --output-dir $(PWD)/special/${SPECIAL_TARGET}
 
 jx3-special:
