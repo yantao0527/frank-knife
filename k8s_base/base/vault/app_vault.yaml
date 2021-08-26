@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: vault
   namespace: argocd
+  annotations:
+    link.argocd.argoproj.io/external-link: https://vault.nuts.yantao0527.me:8200
 spec:
   destination:
     namespace: jx-vault

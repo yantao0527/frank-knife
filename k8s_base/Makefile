@@ -119,8 +119,10 @@ vault-root-token:
 	kubectl -n $(VAULT_NAMESPACE) get secrets vault-unseal-keys \
 	  -o jsonpath={.data.vault-root} | base64 --decode && echo
 
-vault-argocd-app: vault-pre
+vault-argocd-app-:
 	kubectl apply -f base/vault/app_vault.yaml
+
+vault-argocd-app: vault-pre vault-argocd-app-
 
 vault-patch:
 	kubectl -n $(VAULT_NAMESPACE) delete service vault-ui
