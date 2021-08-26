@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: website
   namespace: argocd
+  annotations:
+    link.argocd.argoproj.io/external-link: https://www.nuts.yantao0527.me
 spec:
   destination:
     namespace: website

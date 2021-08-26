@@ -74,6 +74,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    link.argocd.argoproj.io/external-link: https://www.nuts.yantao0527.me
   labels:
     app: website
     version: v1

@@ -21,6 +21,8 @@ metadata:
     app: website
     version: v1
   name: website
+  annotations:
+    link.argocd.argoproj.io/external-link: https://www.nuts.yantao0527.me
 spec:
   selector:
     matchLabels:
