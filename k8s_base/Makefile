@@ -102,7 +102,6 @@ vault-build:
 	rm -rf special/common/vault
 	mkdir special/common/vault
 	helmfile --file base/vault/helmfile_vault.yaml template --include-crds --output-dir-template $(PWD)/special/common/vault
-	cp base/vault/expose_vault_ui.yaml $(PWD)/special/common/vault
 
 vault-special:
 	kubectl -n jx-vault apply -f special/common/vault --recursive=true
@@ -124,9 +123,8 @@ vault-argocd-app-:
 
 vault-argocd-app: vault-pre vault-argocd-app-
 
-vault-patch:
-	kubectl -n $(VAULT_NAMESPACE) delete service vault-ui
-	kubectl -n $(VAULT_NAMESPACE) apply -f special/common/vault/expose_vault_ui.yaml
+vault-ui:
+	kubectl -n $(VAULT_NAMESPACE) apply -f base/vault/expose_vault_ui.yaml
 
 ## jx3
 
