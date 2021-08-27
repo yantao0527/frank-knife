@@ -106,6 +106,9 @@ vault-build:
 vault-special:
 	kubectl -n jx-vault apply -f special/common/vault --recursive=true
 
+vault-status:
+	kubectl -n jx-vault get pod
+
 vault-delete:
 	kubectl -n jx-vault delete -f special/common/vault --recursive=true
 	kubectl delete namespace jx-vault
