@@ -1,0 +1,45 @@
+namespace: jx-observability
+repositories:
+- name: jxgh
+  url: https://jenkins-x-charts.github.io/repo
+- name: grafana
+  url: https://grafana.github.io/helm-charts
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+releases:
+- chart: jxgh/grafana-dashboard
+  version: 0.2.2
+  name: grafana-dashboard
+  values:
+  - grafana-dashboard.yaml.gotmpl
+  - jx-values.yaml
+- chart: grafana/loki
+  version: 2.5.0
+  name: loki
+  values:
+  - loki.yaml
+  - jx-values.yaml
+- chart: grafana/promtail
+  version: 3.5.0
+  name: promtail
+  values:
+  - promtail.yaml
+  - jx-values.yaml
+- chart: grafana/tempo
+  version: 0.6.8
+  name: tempo
+  values:
+  - tempo.yaml
+  - jx-values.yaml
+- chart: grafana/grafana
+  version: 6.6.3
+  name: grafana
+  values:
+  - grafana.yaml.gotmpl
+  - jx-values.yaml
+- chart: prometheus-community/prometheus
+  version: 13.6.0
+  name: prometheus
+  values:
+  - prometheus.yaml
+  - jx-values.yaml
