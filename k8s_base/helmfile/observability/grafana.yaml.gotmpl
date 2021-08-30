@@ -90,7 +90,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: istio
   hosts:
-    - grafana-jx.{{ .Values.jxRequirements.ingress.domain }}
+    - grafana{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
 
 persistence:
   enabled: true
