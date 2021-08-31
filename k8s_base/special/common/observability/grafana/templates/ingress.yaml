@@ -1,0 +1,25 @@
+---
+# Source: grafana/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: jx-observability
+  labels:
+    helm.sh/chart: grafana-6.6.3
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/version: "7.4.3"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+    - host: grafana-jx.nuts.yantao0527.me
+      http:
+        paths:
+
+          - path: /
+            backend:
+              serviceName: grafana
+              servicePort: 80

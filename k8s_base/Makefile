@@ -209,7 +209,8 @@ gitea-delete:
 
 observability-pre:
 	kubectl create namespace jx-observability
-	kubectl label namespace git istio-injection=enabled
+
+#	kubectl label namespace jx-observability istio-injection=enabled
 
 observability-base:
 	helmfile --file helmfile/observability/helmfile.yaml apply
@@ -220,11 +221,13 @@ observability-build:
 	helmfile --file helmfile/observability/helmfile.yaml template --include-crds --output-dir-template $(PWD)/special/common/observability
 
 observability-special:
-	kubectl -n jx-observability apply -f special/common/observability
+	kubectl -n jx-observability apply -f special/common/observability --recursive=true
 
 observability-delete:
 	kubectl delete namespace jx-observability
 
+grafana-password:
+	kubectl -n jx-observability get secret grafana --template='{{index .data "admin-password"}}' | base64 --decode && echo
 
 ## leasing
 
