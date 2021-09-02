@@ -72,6 +72,9 @@ rancher:
 	  rancher/rancher \
 	  --no-cacerts
 
+rancher-password:
+	docker logs rancher  2>&1 | grep "Bootstrap Password:"
+
 rancher-delete:
 	docker rm -f rancher
 
