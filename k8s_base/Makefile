@@ -228,6 +228,17 @@ observability-delete:
 grafana-password:
 	kubectl -n jx-observability get secret grafana --template='{{index .data "admin-password"}}' | base64 --decode && echo
 
+observability-argocd-app: observability-pre
+	cd .. && \
+	argocd app create observability \
+	  --port-forward-namespace argocd \
+	  --project nuts \
+	  --repo https://github.com/yantao0527/frank-knife.git \
+	  --path k8s_base/special/common/observability \
+	  --directory-recurse \
+	  --dest-server https://kubernetes.default.svc \
+	  --dest-namespace jx-observability
+
 ## leasing
 
 leasing-pre:

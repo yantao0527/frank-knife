@@ -17,5 +17,7 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: 'jx-git-operator'
     server: https://kubernetes.default.svc
+  - namespace: 'jx-observability'
+    server: https://kubernetes.default.svc
   sourceRepos:
   - https://github.com/yantao0527/frank-knife.git
