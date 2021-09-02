@@ -210,15 +210,14 @@ gitea-delete:
 observability-pre:
 	kubectl create namespace jx-observability
 
-#	kubectl label namespace jx-observability istio-injection=enabled
-
 observability-base:
 	helmfile --file helmfile/observability/helmfile.yaml apply
+
 
 observability-build:
 	rm -rf special/common/observability
 	mkdir special/common/observability
-	helmfile --file helmfile/observability/helmfile.yaml template --include-crds --output-dir-template $(PWD)/special/common/observability
+	helmfile --file helmfile/observability/helmfile.yaml template --validate --include-crds --output-dir-template $(PWD)/special/common/observability
 
 observability-special:
 	kubectl -n jx-observability apply -f special/common/observability --recursive=true
