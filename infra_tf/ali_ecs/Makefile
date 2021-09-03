@@ -99,3 +99,6 @@ kubeconfig-dns:
 remote:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
 	ssh -i ./id_rsa trial@$(shell terraform output node_eip)
+
+rancher-password:
+	ssh -i ./id_rsa trial@$(shell make node-eip) "docker logs  rancher  2>&1 | grep 'Bootstrap Password:' "
