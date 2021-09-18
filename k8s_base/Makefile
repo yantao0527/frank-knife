@@ -229,6 +229,9 @@ observability-delete:
 grafana-password:
 	kubectl -n jx-observability get secret grafana --template='{{index .data "admin-password"}}' | base64 --decode && echo
 
+grafana-istio:
+	kubectl -n jx-observability apply -f base/observability/grafana_istio_cm.yaml
+
 observability-argocd-app: observability-pre
 	cd .. && \
 	argocd app create observability \
