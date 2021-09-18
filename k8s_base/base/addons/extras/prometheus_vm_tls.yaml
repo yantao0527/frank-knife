@@ -7,7 +7,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -22,7 +22,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -294,6 +294,26 @@ data:
         - __meta_kubernetes_pod_phase
       scrape_interval: 5m
       scrape_timeout: 30s
+    - job_name: kubernetes-file-sd-endpoints
+      kubernetes_sd_configs:
+      - role: endpoints
+      file_sd_configs:
+        - files:
+          - /etc/file_sd/*.json
+      scheme: https
+      tls_config:
+        ca_file: /etc/prom-certs/root-cert.pem
+        cert_file: /etc/prom-certs/cert-chain.pem
+        key_file: /etc/prom-certs/key.pem
+        insecure_skip_verify: true  # Prometheus does not support Istio security naming, thus skip verifying target pod ceritifcate
+      relabel_configs:
+      - action: keep
+        regex: (.+)
+        source_labels:
+        - __meta_filepath
+      - replacement: /stats/prometheus
+        target_label: __metrics_path__
+
   recording_rules.yml: |
     {}
   rules: |
@@ -307,7 +327,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
 rules:
@@ -321,7 +341,6 @@ rules:
       - endpoints
       - pods
       - ingresses
-      - configmaps
     verbs:
       - get
       - list
@@ -340,6 +359,26 @@ rules:
       - "/metrics"
     verbs:
       - get
+  - apiGroups:
+    - "networking.istio.io"
+    verbs:
+      - get
+      - watch
+      - list
+    resources:
+      - workloadentries
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+      - watch
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - configmaps
 ---
 # Source: prometheus/templates/server/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -349,7 +388,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
 subjects:
@@ -369,7 +408,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -394,7 +433,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -408,13 +447,18 @@ spec:
   template:
     metadata:
       annotations:
-        
-        sidecar.istio.io/inject: "false"
+        sidecar.istio.io/inject: "true"
+        traffic.sidecar.istio.io/includeInboundPorts: ""   # do not intercept any inbound ports
+        traffic.sidecar.istio.io/includeOutboundIPRanges: ""  # do not intercept any outbound traffic
+        proxy.istio.io/config: |  # configure an env variable `OUTPUT_CERTS` to write certificates to the given folder
+          proxyMetadata:
+            OUTPUT_CERTS: /etc/istio-output-certs
+        sidecar.istio.io/userVolumeMount: '[{"name": "istio-certs", "mountPath": "/etc/istio-output-certs"}]' # mount the shared volume at sidecar proxy
       labels:
         component: "server"
         app: prometheus
         release: prometheus
-        chart: prometheus-14.3.0
+        chart: prometheus-13.6.0
         heritage: Helm
     spec:
       serviceAccountName: prometheus
@@ -431,9 +475,12 @@ spec:
             - name: config-volume
               mountPath: /etc/config
               readOnly: true
+            - name: file-sd-volume
+              mountPath: /etc/file_sd
+              readOnly: true
 
         - name: prometheus-server
-          image: "prom/prometheus:v2.26.0"
+          image: "prom/prometheus:v2.24.0"
           imagePullPolicy: "IfNotPresent"
           args:
             - --storage.tsdb.retention.time=15d
@@ -470,6 +517,13 @@ spec:
             - name: storage-volume
               mountPath: /data
               subPath: ""
+            - name: file-sd-volume
+              mountPath: /etc/file_sd
+            - name: istio-certs
+              mountPath: /etc/prom-certs/
+        - name: vm-discovery
+          image: "istioecosystem/vm-discovery:latest"
+          imagePullPolicy: "IfNotPresent"
       hostNetwork: false
       dnsPolicy: ClusterFirst
       securityContext:
@@ -482,6 +536,13 @@ spec:
         - name: config-volume
           configMap:
             name: prometheus
+        - name: file-sd-volume
+          configMap:
+            name: file-sd-config
+            optional: true
+        - name: istio-certs
+          emptyDir:
+            medium: Memory
         - name: storage-volume
           emptyDir:
             {}

@@ -7,7 +7,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -22,7 +22,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -294,6 +294,20 @@ data:
         - __meta_kubernetes_pod_phase
       scrape_interval: 5m
       scrape_timeout: 30s
+    - job_name: kubernetes-file-sd-endpoints
+      kubernetes_sd_configs:
+      - role: endpoints
+      file_sd_configs:
+        - files:
+          - /etc/file_sd/*.json
+      relabel_configs:
+      - action: keep
+        regex: (.+)
+        source_labels:
+        - __meta_filepath
+      - replacement: /stats/prometheus
+        target_label: __metrics_path__
+
   recording_rules.yml: |
     {}
   rules: |
@@ -307,7 +321,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
 rules:
@@ -321,7 +335,6 @@ rules:
       - endpoints
       - pods
       - ingresses
-      - configmaps
     verbs:
       - get
       - list
@@ -340,6 +353,26 @@ rules:
       - "/metrics"
     verbs:
       - get
+  - apiGroups:
+    - "networking.istio.io"
+    verbs:
+      - get
+      - watch
+      - list
+    resources:
+      - workloadentries
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+      - watch
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - configmaps
 ---
 # Source: prometheus/templates/server/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -349,7 +382,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
 subjects:
@@ -369,7 +402,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -394,7 +427,7 @@ metadata:
     component: "server"
     app: prometheus
     release: prometheus
-    chart: prometheus-14.3.0
+    chart: prometheus-13.6.0
     heritage: Helm
   name: prometheus
   namespace: istio-system
@@ -408,13 +441,12 @@ spec:
   template:
     metadata:
       annotations:
-        
         sidecar.istio.io/inject: "false"
       labels:
         component: "server"
         app: prometheus
         release: prometheus
-        chart: prometheus-14.3.0
+        chart: prometheus-13.6.0
         heritage: Helm
     spec:
       serviceAccountName: prometheus
@@ -431,9 +463,12 @@ spec:
             - name: config-volume
               mountPath: /etc/config
               readOnly: true
+            - name: file-sd-volume
+              mountPath: /etc/file_sd
+              readOnly: true
 
         - name: prometheus-server
-          image: "prom/prometheus:v2.26.0"
+          image: "prom/prometheus:v2.24.0"
           imagePullPolicy: "IfNotPresent"
           args:
             - --storage.tsdb.retention.time=15d
@@ -470,6 +505,11 @@ spec:
             - name: storage-volume
               mountPath: /data
               subPath: ""
+            - name: file-sd-volume
+              mountPath: /etc/file_sd
+        - name: vm-discovery
+          image: "istioecosystem/vm-discovery:latest"
+          imagePullPolicy: "IfNotPresent"
       hostNetwork: false
       dnsPolicy: ClusterFirst
       securityContext:
@@ -482,6 +522,10 @@ spec:
         - name: config-volume
           configMap:
             name: prometheus
+        - name: file-sd-volume
+          configMap:
+            name: file-sd-config
+            optional: true
         - name: storage-volume
           emptyDir:
             {}

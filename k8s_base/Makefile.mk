@@ -1,5 +1,5 @@
 
-ISTIO_VERSION=1.10.0
+ISTIO_VERSION=1.11.2
 ISTIO_SPACE=istio-${ISTIO_VERSION}
 
 istio-download0:
@@ -8,7 +8,7 @@ istio-download0:
 	  cp ${ISTIO_SPACE}/bin/istioctl ${HOME}/bin
 
 
-ISTIO_DOWNLOAD=https://dl-nuts.oss-cn-hangzhou.aliyuncs.com/istioctl-1.10.0
+ISTIO_DOWNLOAD=https://dl-nuts.oss-cn-hangzhou.aliyuncs.com/istioctl-${ISTIO_VERSION}
 
 istio-download:
 	sudo curl -sSL -o /usr/local/bin/istioctl ${ISTIO_DOWNLOAD}
