@@ -96,9 +96,21 @@ kubeconfig-dns:
 	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
 	@echo "$(shell make node-eip)    nuts.yantao0527.me"
 
+playbook:
+	ansible-playbook \
+        -i '$($(shell make node-eip)),' \
+        -u root \
+        --private-key ./id_rsa \
+        --extra-vars docker_version=19.03 \
+        ../ansible/setup.yml
+
 remote:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
 	ssh -i ./id_rsa trial@$(shell terraform output node_eip)
+
+k8s-create:
+	ssh -i ./id_rsa trial@$(shell make node-eip) \
+	    "cd workspace/frank-knife/infra_tf/k8s;  make one-click0 "
 
 rancher-password:
 	ssh -i ./id_rsa trial@$(shell make node-eip) "docker logs  rancher  2>&1 | grep 'Bootstrap Password:' "
