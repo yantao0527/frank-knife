@@ -57,6 +57,17 @@ resource "alicloud_security_group_rule" "accept_docker_registry_proxy_rule" {
   priority          = 100
   security_group_id = alicloud_security_group.group.id
   cidr_ip           = "0.0.0.0/0"
+  description       = "registry proxy"
+}
+
+resource "alicloud_security_group_rule" "accept_docker_registry_rule" {
+  type              = "ingress"
+  ip_protocol       = "tcp"
+  policy            = "accept"
+  port_range        = "5000/5000"
+  priority          = 100
+  security_group_id = alicloud_security_group.group.id
+  cidr_ip           = "0.0.0.0/0"
   description       = "registry"
 }
 
