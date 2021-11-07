@@ -118,3 +118,6 @@ k8s-create:
 
 rancher-password:
 	ssh -i ./id_rsa trial@$(shell make node-eip) "docker logs  rancher  2>&1 | grep 'Bootstrap Password:' "
+
+
+infra: create k8s-create kubeconfig
