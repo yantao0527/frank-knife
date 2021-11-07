@@ -4,6 +4,11 @@ DOMAIN=nuts.yantao0527.me
 
 include Makefile.mk
 
+## 快速搭建平台
+
+platform: istio argocd argocd-wait argocd-post argocd-apps
+
+
 ## argocd
 
 argocd-pre:
@@ -33,6 +38,12 @@ argocd-special:
 	
 argocd-status:
 	kubectl -n argocd get pod
+
+argocd-wait:
+	kubectl -n argocd wait deploy/argocd-redis --for condition=available
+	kubectl -n argocd wait deploy/argocd-repo-server --for condition=available
+	kubectl -n argocd wait deploy/argocd-dex-server --for condition=available
+	kubectl -n argocd wait deploy/argocd-server --for condition=available
 
 argocd-delete:
 	kubectl delete namespace argocd
