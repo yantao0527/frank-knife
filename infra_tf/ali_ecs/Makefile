@@ -58,6 +58,10 @@ vm-stop: check-access check-secret
 state-list:
 	terraform state list
 
+state-rm-eip:
+	terraform state rm alicloud_eip_association.eip_asso
+	terraform state rm alicloud_eip.eip
+
 destroy:
 	@echo 销毁terraform资源
 	terraform destroy -auto-approve \
@@ -121,3 +125,5 @@ rancher-password:
 
 
 infra: create k8s-create kubeconfig
+	sleep 10
+	make rancher-password
