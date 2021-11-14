@@ -125,5 +125,4 @@ rancher-password:
 
 
 infra: create k8s-create kubeconfig
-	sleep 10
-	make rancher-password
+

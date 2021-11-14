@@ -1,0 +1,7 @@
+helm upgrade --install=true \
+    --namespace=cattle-monitoring-system \
+    --timeout=10m0s \
+    --values=/home/shell/helm/values-rancher-monitoring-crd-100.0.0-up16.6.0.yaml \
+    --version=100.0.0+up16.6.0 \
+    --wait=true \
+    rancher-monitoring-crd /home/shell/helm/rancher-monitoring-crd-100.0.0-up16.6.0.tgz
