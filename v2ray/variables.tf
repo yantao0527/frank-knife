@@ -13,15 +13,17 @@ variable "region" {
   type = string
 }
 
+variable "prefix" {
+  type        = string
+  description = "Prefix added to names of all resources"
+  default     = "v2ray"
+}
+
 variable "home" {
 
 }
 
 variable "zone_1" {
-
-}
-
-variable "host_name" {
 
 }
 

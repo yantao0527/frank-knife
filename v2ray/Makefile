@@ -33,7 +33,8 @@ plan: check-access check-secret
 	terraform plan \
 	  --var home=$(HOME) \
 	  --var access_key=$(ALICLOUD_ACCESS_KEY) \
-	  --var secret_key=$(ALICLOUD_SECRET_KEY)
+	  --var secret_key=$(ALICLOUD_SECRET_KEY) \
+	  --var compute_status=Running
 
 create: check-access check-secret
 	@echo 安装v2ray服务器

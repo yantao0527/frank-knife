@@ -1,10 +1,3 @@
-terraform {
-#  required_providers {
-#    alicloud = {
-#      version = "1.64"
-#    }
-#  }
-}
 
 output "cmd_remote" {
   description = "ssh remote host"
