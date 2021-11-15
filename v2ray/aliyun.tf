@@ -78,7 +78,7 @@ resource "alicloud_security_group_rule" "accept_v2ray_rule" {
   type              = "ingress"
   ip_protocol       = "tcp"
   policy            = "accept"
-  port_range        = "${var.v2ray_port}/${var.v2ray_port}"
+  port_range        = "19325/19335"
   priority          = 100
   security_group_id = alicloud_security_group.group.id
   cidr_ip           = "0.0.0.0/0"
