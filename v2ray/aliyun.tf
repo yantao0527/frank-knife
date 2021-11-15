@@ -1,7 +1,7 @@
 # IP ADDRESS
 resource "alicloud_eip" "eip" {
   name      = "${var.prefix}-eip"
-  bandwidth  = 10
+  bandwidth = 10
 }
 
 # NETWORK
@@ -11,7 +11,7 @@ resource "alicloud_vpc" "vpc" {
 }
 
 resource "alicloud_vswitch" "vsw" {
-  name       = "${var.prefix}-vsw"
+  name              = "${var.prefix}-vsw"
   vpc_id            = alicloud_vpc.vpc.id
   cidr_block        = var.vsw_1_cidr
   availability_zone = var.zone_1
@@ -20,8 +20,8 @@ resource "alicloud_vswitch" "vsw" {
 
 # COMPUTE ENGINE INSTANCE
 resource "alicloud_instance" "compute" {
-  image_id              = data.alicloud_images.default.images.0.id
-  internet_charge_type  = "PayByBandwidth"
+  image_id             = data.alicloud_images.default.images.0.id
+  internet_charge_type = "PayByBandwidth"
 
   instance_type        = data.alicloud_instance_types.c1g1.instance_types.0.id
   system_disk_category = "cloud_efficiency"
@@ -29,10 +29,10 @@ resource "alicloud_instance" "compute" {
   instance_name        = "${var.prefix}-vm"
   host_name            = "${var.prefix}-vm"
   vswitch_id           = alicloud_vswitch.vsw.id
-  tags                 = {
+  tags = {
     from = "frank-knife"
   }
-  status               = var.compute_status
+  status = var.compute_status
 
   internet_max_bandwidth_out = 0
 }
@@ -45,7 +45,7 @@ resource "alicloud_key_pair" "publickey" {
 
 resource "alicloud_key_pair_attachment" "attachment" {
   key_name     = alicloud_key_pair.publickey.id
-  instance_ids = [ alicloud_instance.compute.id ]
+  instance_ids = [alicloud_instance.compute.id]
 }
 
 resource "alicloud_eip_association" "eip_asso" {
@@ -72,7 +72,7 @@ resource "alicloud_eip_association" "eip_asso" {
 
 # locals
 locals {
-  
+
   cmd_remote = "ssh root@${alicloud_eip.eip.ip_address}"
 
   cmd_playbook = <<EOT

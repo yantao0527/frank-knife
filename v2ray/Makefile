@@ -29,6 +29,9 @@ init:
 validate:
 	terraform validate
 
+fmt:
+	terraform fmt
+
 plan: check-access check-secret
 	terraform plan \
 	  --var home=$(HOME) \

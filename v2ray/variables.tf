@@ -53,5 +53,5 @@ variable "v2ray_alterId" {
 
 variable "compute_status" {
   description = "compute status[ running | stopped ]"
-  type  = string
+  type        = string
 }
