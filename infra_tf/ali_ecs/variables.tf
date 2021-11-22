@@ -13,7 +13,7 @@ variable "secret_key" {
 
 variable "region" {
   type        = string
-  description = "阿里云region，缺省新加坡"
+  description = "阿里云region"
   default     = "ap-southeast-1"
 }
 
