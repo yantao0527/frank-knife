@@ -43,3 +43,7 @@ renew:
 		-d nuts.$(DOMAIN) \
 		-d *.nuts.$(DOMAIN)
 
+copy-cert:
+	sudo cp out/nginx/*.pem ../k8s_base/certs/nuts.yantao0527.me
+	sudo chown $(shell id -un):$(shell id -gn) ../k8s_base/certs/nuts.yantao0527.me/*.pem
+
