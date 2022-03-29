@@ -110,10 +110,10 @@ playbook:
 
 remote-reset:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
-	ssh -i ./id_rsa trial@$(shell terraform output node_eip)
+	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)
 
 remote:
-	ssh -i ./id_rsa trial@$(shell terraform output node_eip)
+	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)
 
 k8s-create:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
