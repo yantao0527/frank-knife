@@ -2,7 +2,7 @@
 
 # OS IMAGE
 data "alicloud_images" "default" {
-  name_regex  = "^centos_8"
+  name_regex  = "^centos_8.2"
   most_recent = true
   owners      = "system"
 }

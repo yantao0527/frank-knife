@@ -108,9 +108,11 @@ playbook:
         --extra-vars docker_version=19.03 \
         ../ansible/setup.yml
 
-remote-reset:
+remote-rm:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
-	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)
+
+remote-root:
+	ssh -i ./id_rsa root@$(shell terraform output -raw node_eip)
 
 remote:
 	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)
