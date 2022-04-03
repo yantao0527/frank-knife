@@ -19,19 +19,19 @@ variable "region" {
 
 variable "zone_1" {
   type        = string
-  description = "阿里云zone"
-  default     = "ap-southeast-1b"
+  description = "aws zone"
+  default     = "us-east-2b"
 }
 
 variable "vpc_cidr" {
   type        = string
-  description = "阿里云vpc CIDR"
+  description = "aws vpc CIDR"
   default     = "192.168.0.0/16"
 }
 
 variable "vsw_1_cidr" {
   type        = string
-  description = "阿里云vswitch CIDR"
+  description = "aws subnet CIDR"
   default     = "192.168.11.0/24"
 }
 

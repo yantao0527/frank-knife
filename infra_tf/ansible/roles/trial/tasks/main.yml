@@ -17,20 +17,20 @@
 - name: "Reload sshd service"
   service: name=sshd state=reloaded
 
-- name: Correct centos8.2 yum repository baseurl
-  ansible.builtin.replace:
-    path: '/etc/yum.repos.d/{{ item }}'
-    backup: yes
-    regexp: '^(baseurl=.*)\$releasever(.*)$'
-    replace: '\g<1>8-stream\2'
-  with_items:
-    - CentOS-AppStream.repo
-    - CentOS-Base.repo
-    - CentOS-centosplus.repo
-    - CentOS-CR.repo
-    - CentOS-Extras.repo
-    - CentOS-fasttrack.repo
-    - CentOS-PowerTools.repo
+# - name: Correct centos8.2 yum repository baseurl
+#   ansible.builtin.replace:
+#     path: '/etc/yum.repos.d/{{ item }}'
+#     backup: yes
+#     regexp: '^(baseurl=.*)\$releasever(.*)$'
+#     replace: '\g<1>8-stream\2'
+#   with_items:
+#     - CentOS-AppStream.repo
+#     - CentOS-Base.repo
+#     - CentOS-centosplus.repo
+#     - CentOS-CR.repo
+#     - CentOS-Extras.repo
+#     - CentOS-fasttrack.repo
+#     - CentOS-PowerTools.repo
 
 - name: "Install required packages"
   yum:

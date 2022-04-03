@@ -1,18 +1,46 @@
 resource "aws_vpc" "default" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
+  tags = {
+    Name = "${var.prefix}-vpc"
+  }
 }
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.default.id
+  tags = {
+    Name = "${var.prefix}-gw"
+  }
 }
 
-resource "aws_subnet" "knife_subnet" {
+resource "aws_subnet" "subnet" {
   vpc_id                  = aws_vpc.default.id
-  cidr_block              = "10.0.0.0/24"
-  map_public_ip_on_launch = true
+  cidr_block              = var.vsw_1_cidr
+  map_public_ip_on_launch = "true" //it makes this a public subnet
+  availability_zone       = var.zone_1
 
   depends_on = [aws_internet_gateway.gw]
+
+  tags = {
+    Name = "${var.prefix}-subnet"
+  }
+}
+resource "aws_route_table" "crt" {
+    vpc_id = aws_vpc.default.id
+    route {
+        cidr_block = "0.0.0.0/0" //associated subnet can reach everywhere
+        gateway_id = aws_internet_gateway.gw.id //CRT uses this IGW to reach internet
+    }
+
+    tags = {
+        Name = "${var.prefix}-crt"
+    }
+}
+
+# route table association for the public subnets
+resource "aws_route_table_association" "crta" {
+    subnet_id = aws_subnet.subnet.id
+    route_table_id = aws_route_table.crt.id
 }
 
 resource "aws_key_pair" "key_pair" {
@@ -21,13 +49,13 @@ resource "aws_key_pair" "key_pair" {
 }
 
 resource "aws_instance" "compute" {
-  ami           = "ami-830c94e3"
+  ami           = "ami-0ba62214afa52bec7"  # REDHAT 8.4
   instance_type = "t2.micro"
 
-  key_name  = aws_key_pair.key_pair.key_name
+  key_name = aws_key_pair.key_pair.key_name
 
-  private_ip = "10.0.0.12"
-  subnet_id  = aws_subnet.knife_subnet.id
+  private_ip = "192.168.11.12"
+  subnet_id  = aws_subnet.subnet.id
 
   tags = {
     Name = "ExampleComputeInstance"
@@ -35,9 +63,9 @@ resource "aws_instance" "compute" {
 }
 
 resource "aws_eip" "eip" {
-  vpc      = true
-  instance = aws_instance.compute.id
-  associate_with_private_ip = "10.0.0.12"
+  vpc                       = true
+  instance                  = aws_instance.compute.id
+  associate_with_private_ip = "192.168.11.12"
   depends_on                = [aws_internet_gateway.gw]
 }
 
@@ -45,7 +73,7 @@ resource "aws_eip" "eip" {
 locals {
 
   cmd_remote = <<EOT
-#      ssh -i ${path.module}/id_rsa root@${aws_eip.eip.public_ip}
+#      ssh -i ${path.module}/id_rsa ec2-user@${aws_eip.eip.public_ip}
       ssh -i ${path.module}/id_rsa trial@${aws_eip.eip.public_ip}
   EOT
 
@@ -54,7 +82,7 @@ locals {
   cmd_playbook = <<EOT
       ansible-playbook \
         -i '${aws_eip.eip.public_ip},' \
-        -u root \
+        -u ec2-user \
         --private-key ${path.module}/id_rsa \
         --extra-vars docker_version=${var.docker_version} \
         ../ansible/setup.yml
