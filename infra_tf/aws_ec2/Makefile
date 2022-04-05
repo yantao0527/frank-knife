@@ -100,10 +100,13 @@ kubeconfig-dns:
 	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
 	@echo "$(shell make node-eip)    nuts.yantao0527.me"
 
+#ROOT_NAME=root
+ROOT_NAME=ec2-user
+
 playbook:
 	ansible-playbook \
         -i '$($(shell make node-eip)),' \
-        -u root \
+        -u $(ROOT_NAME) \
         --private-key ./id_rsa \
         --extra-vars docker_version=19.03 \
         ../ansible/setup.yml
@@ -112,7 +115,7 @@ remote-rm:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
 
 remote-root:
-	ssh -i ./id_rsa root@$(shell terraform output -raw node_eip)
+	ssh -i ./id_rsa $(ROOT_NAME)@$(shell terraform output -raw node_eip)
 
 remote:
 	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)

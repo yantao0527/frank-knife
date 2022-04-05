@@ -50,15 +50,17 @@ resource "aws_key_pair" "key_pair" {
 
 resource "aws_instance" "compute" {
   ami           = "ami-0ba62214afa52bec7"  # REDHAT 8.4
-  instance_type = "t2.micro"
+  instance_type = "t2.large"
 
   key_name = aws_key_pair.key_pair.key_name
 
   private_ip = "192.168.11.12"
   subnet_id  = aws_subnet.subnet.id
 
+  vpc_security_group_ids = [aws_security_group.group.id]
+
   tags = {
-    Name = "ExampleComputeInstance"
+    Name = "${var.prefix}-instance"
   }
 }
 
