@@ -69,7 +69,7 @@ rancher:
 	  -v $(CERT_PATH)/fullchain.pem:/etc/rancher/ssl/cert.pem \
 	  -v $(CERT_PATH)/privkey.pem:/etc/rancher/ssl/key.pem \
 	  --privileged \
-	  rancher/rancher:v2.5-head \
+	  rancher/rancher:v2.6-head \
 	  --no-cacerts
 
 rancher-password:
