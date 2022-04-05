@@ -2,6 +2,7 @@
 - name: install dependencies package
   yum:
     name:
+    - python
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
