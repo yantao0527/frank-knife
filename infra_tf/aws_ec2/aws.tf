@@ -71,6 +71,26 @@ resource "aws_eip" "eip" {
   depends_on                = [aws_internet_gateway.gw]
 }
 
+resource "null_resource" "playbook" {
+  depends_on                = [aws_instance.compute, aws_eip.eip]
+
+  provisioner "remote-exec" {
+    inline = ["echo 'Waiting for server to be initialized...'"]
+
+    connection {
+      type        = "ssh"
+      agent       = false
+      host        = aws_eip.eip.public_ip
+      user        = "ec2-user"
+      private_key = tls_private_key.global_key.private_key_pem
+    }
+  }
+
+  provisioner "local-exec" {
+    command = local.cmd_playbook
+  }
+}
+
 # locals
 locals {
 
@@ -86,6 +106,7 @@ locals {
         -i '${aws_eip.eip.public_ip},' \
         -u ec2-user \
         --private-key ${path.module}/id_rsa \
+		    --extra-vars infra_type=aws_ec2.redhat84 \
         --extra-vars docker_version=${var.docker_version} \
         ../ansible/setup.yml
   EOT  

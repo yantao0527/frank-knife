@@ -102,9 +102,10 @@ kubeconfig-dns:
 
 playbook:
 	ansible-playbook \
-        -i '$($(shell make node-eip)),' \
+        -i '$(shell terraform output -raw node_eip),' \
         -u root \
         --private-key ./id_rsa \
+		--extra-vars infra_type=ali_ecs.centos82 \
         --extra-vars docker_version=19.03 \
         ../ansible/setup.yml
 

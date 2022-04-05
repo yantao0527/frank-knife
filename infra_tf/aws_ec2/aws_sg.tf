@@ -1,5 +1,6 @@
 resource "aws_security_group" "group" {
 
+    name   = "${var.prefix}-sg"
     vpc_id = aws_vpc.default.id
 
     egress {
@@ -14,6 +15,7 @@ resource "aws_security_group" "group" {
         to_port = -1
         protocol = "icmp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "ping"
     }
 
     ingress {
@@ -24,6 +26,7 @@ resource "aws_security_group" "group" {
         // This means, all ip address are allowed to ssh !
         // Do not do it in the production. Put your office or home address in it!
         cidr_blocks = ["0.0.0.0/0"]
+        description = "ssh"
     }
 
     ingress {
@@ -31,6 +34,7 @@ resource "aws_security_group" "group" {
         to_port = 80
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "http"
     }
 
     ingress {
@@ -38,6 +42,7 @@ resource "aws_security_group" "group" {
         to_port = 443
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "https"
     }
 
     ingress {
@@ -45,6 +50,7 @@ resource "aws_security_group" "group" {
         to_port = 3128
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "registry proxy"
     }
 
     ingress {
@@ -52,6 +58,7 @@ resource "aws_security_group" "group" {
         to_port = 5000
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "registry"
     }
 
     ingress {
@@ -59,6 +66,7 @@ resource "aws_security_group" "group" {
         to_port = 7777
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "octant"
     }
 
     ingress {
@@ -66,6 +74,7 @@ resource "aws_security_group" "group" {
         to_port = 8080
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "rancher http"
     }
 
     ingress {
@@ -73,6 +82,7 @@ resource "aws_security_group" "group" {
         to_port = 8200
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "vault ui"
     }
 
     ingress {
@@ -80,6 +90,7 @@ resource "aws_security_group" "group" {
         to_port = 8443
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "rancher https"
     }
 
     ingress {
@@ -87,6 +98,7 @@ resource "aws_security_group" "group" {
         to_port = 32022
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "git ssh"
     }
 
     ingress {
@@ -94,6 +106,7 @@ resource "aws_security_group" "group" {
         to_port = 32222
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "git ssh2"
     }
 
     ingress {
@@ -101,6 +114,7 @@ resource "aws_security_group" "group" {
         to_port = 36443
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "k8s api"
     }
 
     ingress {
@@ -108,6 +122,7 @@ resource "aws_security_group" "group" {
         to_port = 6443
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "k8s api2"
     }
 
 }

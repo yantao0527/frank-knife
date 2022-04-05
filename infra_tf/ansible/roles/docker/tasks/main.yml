@@ -2,7 +2,6 @@
 - name: install dependencies package
   yum:
     name:
-    - python
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
@@ -36,6 +35,12 @@
     name: trial
     groups: docker
     append: yes
+
+- name: install docker SDK dependencies package
+  yum:
+    name:
+    - python3
+  when: infra_type == 'aws_ec2.redhat84'
 
 - name: installing docker SDK
   pip:

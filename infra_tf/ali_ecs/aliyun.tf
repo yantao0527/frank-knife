@@ -90,6 +90,7 @@ locals {
         -i '${alicloud_eip.eip.ip_address},' \
         -u root \
         --private-key ${path.module}/id_rsa \
+		    --extra-vars infra_type=ali_ecs.centos82 \
         --extra-vars docker_version=${var.docker_version} \
         ../ansible/setup.yml
   EOT  
