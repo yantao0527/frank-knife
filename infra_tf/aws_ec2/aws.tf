@@ -52,6 +52,12 @@ resource "aws_instance" "compute" {
   ami           = "ami-0ba62214afa52bec7"  # REDHAT 8.4
   instance_type = "t2.large"
 
+  root_block_device {
+    delete_on_termination = true
+    volume_size = 40
+    volume_type = "gp2"
+  }
+
   key_name = aws_key_pair.key_pair.key_name
 
   private_ip = "192.168.11.12"
