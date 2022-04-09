@@ -48,3 +48,8 @@ data "aws_ami" "centos" {
       values = ["ebs"]
   }
 }
+
+data "aws_route53_zone" "dns" {
+  name         = "frank5.link."
+  private_zone = false
+}

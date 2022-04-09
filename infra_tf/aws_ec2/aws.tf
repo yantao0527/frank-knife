@@ -77,6 +77,13 @@ resource "aws_eip" "eip" {
   depends_on                = [aws_internet_gateway.gw]
 }
 
+resource "aws_route53_record" "nuts" {
+  zone_id = data.aws_route53_zone.dns.zone_id
+  name    = "nuts.${data.aws_route53_zone.dns.name}"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.eip.public_ip]
+}
 resource "null_resource" "playbook" {
   depends_on                = [aws_instance.compute, aws_eip.eip]
 
