@@ -4,6 +4,8 @@ v2ray/remote.sh
 v2ray/playbook.sh
 
 acme/out
+acme/out_alicloud
+acme/out_aws
 acme/*.sh
 
 infra_tf/ansible/roles/trial/files/id_rsa
