@@ -84,6 +84,15 @@ resource "aws_route53_record" "nuts" {
   ttl     = "300"
   records = [aws_eip.eip.public_ip]
 }
+
+resource "aws_route53_record" "nuts_wild" {
+  zone_id = data.aws_route53_zone.dns.zone_id
+  name    = "*.nuts.${data.aws_route53_zone.dns.name}"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.eip.public_ip]
+}
+
 resource "null_resource" "playbook" {
   depends_on                = [aws_instance.compute, aws_eip.eip]
 
