@@ -208,7 +208,7 @@ spec:
   - http-gateway
   - https-gateway
   hosts:
-  - argocd2.nuts.yantao0527.me
+  - argocd2.nuts.frank5.link
   http:
   - route:
     - destination:

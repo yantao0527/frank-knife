@@ -1,0 +1,8 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: argocd2
+spec:
+  hosts:
+  - argocd2.nuts.frank5.link
+---

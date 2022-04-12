@@ -17,4 +17,5 @@ patchesStrategicMerge:
 - k_http_gw.yaml
 - k_https_gw.yaml
 - k_addons_vs.yaml
+- k_argocd_vs.yaml
 - k_dashboard_vs.yaml
