@@ -4,26 +4,26 @@ init-infra:
 
 check-access:
 ifndef AWS_ACCESS_KEY
-	$(error 请执行 source ../base/env.sh 或手动配置 AWS_ACCESS_KEY)
+	$(error Please run source ../base/env.sh or setup env AWS_ACCESS_KEY)
 endif
 
 check-secret:
 ifndef AWS_SECRET_KEY
-	$(error 请执行 source ../base/env.sh 或手动配置 AWS_SECRET_KEY)
+	$(error Please run source ../base/env.sh or setup env AWS_SECRET_KEY)
 endif
 
 check-id_rsa:
 ifneq ($(shell test -e $(HOME)/.ssh/id_rsa && echo -n yes), yes)
-	$(error 请配置 $(HOME)/.ssh/id_rsa)
+	$(error Please setup $(HOME)/.ssh/id_rsa)
 endif
 
 check-id_rsa-pub:
 ifneq ($(shell test -e $(HOME)/.ssh/id_rsa.pub && echo -n yes), yes)
-	$(error 请配置 $(HOME)/.ssh/id_rsa.pub)
+	$(error Please setup $(HOME)/.ssh/id_rsa.pub)
 endif
 
 check: check-id_rsa check-id_rsa-pub check-access check-secret
-	@echo 检查环境是否满足
+	@echo Validate environment
 	terraform version
 	ansible-playbook --version
 
@@ -39,7 +39,7 @@ plan: check-access check-secret
 	  --var secret_key=$(AWS_SECRET_KEY)
 
 create: check-access check-secret
-	@echo 创建terraform资源
+	@echo Create terraform resource
 	terraform apply -auto-approve \
 	  --var access_key=$(AWS_ACCESS_KEY) \
 	  --var secret_key=$(AWS_SECRET_KEY)
@@ -63,7 +63,7 @@ state-rm-eip:
 	terraform state rm AWS_eip.eip
 
 destroy:
-	@echo 销毁terraform资源
+	@echo Destroy terraform resource
 	terraform destroy -auto-approve \
 	  --var access_key=$(AWS_ACCESS_KEY) \
 	  --var secret_key=$(AWS_SECRET_KEY) \
@@ -94,10 +94,10 @@ kubeconfig:
 	scp -i ./id_rsa trial@$(shell make node-eip):.kube/config $(HOME)/.kube/knife.conf
 	sed -i 's/https\:\/\/0\.0\.0\.0/https\:\/\/nuts\.$(KNIFE_DOMAIN)/' $(HOME)/.kube/knife.conf
 	@echo ""
-	@echo 'export KUBECONFIG=$$HOME/.kube/knife.conf 可用kubectl访问k3d'
+	@echo 'export KUBECONFIG=$$HOME/.kube/knife.conf then kubectl can access k3d'
 
 kubeconfig-dns:
-	@echo "请配置kubeconfig本地地址解析，在/etc/hosts配置条目："
+	@echo "Please setup DNS resolve, or add item in /etc/hosts: "
 	@echo "$(shell make node-eip)    nuts.$(KNIFE_DOMAIN)"
 
 #ROOT_NAME=root
