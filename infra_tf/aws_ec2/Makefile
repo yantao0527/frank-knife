@@ -123,7 +123,7 @@ remote:
 
 k8s-create:
 	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
-	ssh -i ./id_rsa trial@$(shell make node-eip) \
+	ssh -i ./id_rsa -o StrictHostKeyChecking=no trial@$(shell make node-eip) \
 	    "cd workspace/frank-knife/infra_tf/k8s;  make one-click0 "
 
 rancher-password:
