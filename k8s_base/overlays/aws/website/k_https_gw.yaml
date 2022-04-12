@@ -14,7 +14,7 @@ spec:
     hosts:
     - www.nuts.frank5.link
     - leasing.nuts.frank5.link
-    - argocd.nuts.frank5.link
+    - argocd2.nuts.frank5.link
     - kiali.nuts.frank5.link
     - prometheus.nuts.frank5.link
     - grafana.nuts.frank5.link
