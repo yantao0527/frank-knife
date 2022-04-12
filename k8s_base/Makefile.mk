@@ -33,14 +33,6 @@ istio-addons-special:
 ARGOCD_DOWNLOAD=https://dl-nuts.oss-cn-hangzhou.aliyuncs.com/argocd-linux-amd64
 ARGOCD_PASSWORD := admin123
 
-ifeq (${SPECIAL_TARGET}, laptop)
-ARGOCD_SERVER=argocd.z01.yantao0527.me
-endif
-
-ifeq (${SPECIAL_TARGET}, nuts)
-ARGOCD_SERVER=argocd.nuts.yantao0527.me
-endif
-
 argocd-cli:
 	sudo curl -sSL -o /usr/local/bin/argocd ${ARGOCD_DOWNLOAD}
 	sudo chmod +x /usr/local/bin/argocd
@@ -49,7 +41,7 @@ argocd-password:
 	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > argocd_password.txt
 
 argocd-login:
-	argocd login ${ARGOCD_SERVER} --port-forward-namespace argocd --username admin --password ${shell cat argocd_password.txt}
+	argocd login argocd.$(DOMAIN) --port-forward-namespace argocd --username admin --password ${shell cat argocd_password.txt}
 
 argocd-update-password:
 	argocd account update-password --port-forward-namespace argocd --current-password ${shell cat argocd_password.txt} --new-password admin123

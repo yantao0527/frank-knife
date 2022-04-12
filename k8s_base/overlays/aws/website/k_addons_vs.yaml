@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana-vs
+spec:
+  hosts:
+  - grafana.nuts.frank5.link
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali-vs
+spec:
+  hosts:
+  - kiali.nuts.frank5.link
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus-vs
+spec:
+  hosts:
+  - prometheus.nuts.frank5.link
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tracing-vs
+spec:
+  hosts:
+  - tracing.nuts.frank5.link
+---

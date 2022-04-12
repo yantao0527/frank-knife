@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-gateway
+spec:
+  servers:
+  - port:
+      number: 443
+      name: https-tls
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: website-tls
+    hosts:
+    - nuts.frank5.link
+    - leasing.nuts.frank5.link
+    - argocd.nuts.frank5.link
+    - kiali.nuts.frank5.link
+    - prometheus.nuts.frank5.link
+    - grafana.nuts.frank5.link
+    - tracing.nuts.frank5.link
+  - port:
+      number: 443
+      name: https-passthrough
+      protocol: HTTPS
+    tls:
+      mode: PASSTHROUGH
+    hosts:
+    - dashboard.nuts.frank5.link
+---

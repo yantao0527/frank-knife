@@ -1,6 +1,6 @@
-SPECIAL_TARGET=nuts
+SPECIAL_TARGET=aws
 #SPECIAL_TARGET=laptop
-DOMAIN=nuts.yantao0527.me
+DOMAIN=nuts.$(KNIFE_DOMAIN)
 
 include Makefile.mk
 
@@ -17,8 +17,8 @@ argocd-pre:
 
 argocd-tls:
 	kubectl -n istio-system create secret tls argocd-tls \
-	  --key certs/argocd.$(DOMAIN)/privkey.pem \
-	  --cert certs/argocd.$(DOMAIN)/fullchain.pem
+	  --key certs/$(DOMAIN)/privkey.pem \
+	  --cert certs/$(DOMAIN)/fullchain.pem
 
 argocd-gateway:
 	kubectl -n argocd apply -f base/argocd/argocd_gateway.yaml
