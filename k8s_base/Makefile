@@ -17,8 +17,8 @@ argocd-pre:
 
 argocd-tls:
 	kubectl -n istio-system create secret tls argocd-tls \
-	  --key certs/$(DOMAIN)/privkey.pem \
-	  --cert certs/$(DOMAIN)/fullchain.pem
+	  --key certs/argocd.$(DOMAIN)/privkey.pem \
+	  --cert certs/argocd.$(DOMAIN)/fullchain.pem
 
 argocd-gateway:
 	kubectl -n argocd apply -f base/argocd/argocd_gateway.yaml

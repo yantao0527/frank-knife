@@ -56,12 +56,31 @@ nginx-cert: check-domain
 renew: check-domain
 	docker run --rm  -it  \
 		-v "$(PWD)/out":/acme.sh  \
-		$(ACME_IMAGE) --renew --log \
-		-d nuts.$(KNIFE_DOMAIN) \
-		-d *.nuts.$(KNIFE_DOMAIN)
+		$(ACME_IMAGE) --renew --log
 
 copy-cert:
 	-mkdir ../k8s_base/certs/nuts.$(KNIFE_DOMAIN)
 	sudo cp out/nginx/*.pem ../k8s_base/certs/nuts.$(KNIFE_DOMAIN)
 	sudo chown $(shell id -un):$(shell id -gn) ../k8s_base/certs/nuts.$(KNIFE_DOMAIN)/*.pem
+
+issue-aws-argocd: check-domain check-aws
+	docker run --rm  -it  \
+		-v "$(PWD)/out":/acme.sh  \
+		-e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY) \
+		-e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_KEY) \
+		$(ACME_IMAGE) --issue --log --dns dns_aws \
+		-d argocd.nuts.$(KNIFE_DOMAIN)
+
+nginx-cert-argocd: check-domain
+	-sudo mkdir out/nginx
+	docker run --rm  -it  \
+		-v "$(PWD)/out":/acme.sh  \
+		$(ACME_IMAGE) --install-cert --log -d argocd.nuts.$(KNIFE_DOMAIN) \
+		--key-file /acme.sh/nginx/privkey.pem \
+		--fullchain-file /acme.sh/nginx/fullchain.pem
+
+copy-cert-argocd:
+	-mkdir ../k8s_base/certs/argocd.nuts.$(KNIFE_DOMAIN)
+	sudo cp out/nginx/*.pem ../k8s_base/certs/argocd.nuts.$(KNIFE_DOMAIN)
+	sudo chown $(shell id -un):$(shell id -gn) ../k8s_base/certs/argocd.nuts.$(KNIFE_DOMAIN)/*.pem
 
