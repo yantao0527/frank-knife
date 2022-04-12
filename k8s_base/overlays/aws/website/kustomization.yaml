@@ -12,6 +12,7 @@ generatorOptions:
   annotations:
     note: generated
 patchesStrategicMerge:
+- k_website.yaml
 - k_website_vs.yaml
 - k_http_gw.yaml
 - k_https_gw.yaml

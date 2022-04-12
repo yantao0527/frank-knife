@@ -74,8 +74,6 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  annotations:
-    link.argocd.argoproj.io/external-link: https://www.nuts.frank5.link
   name: website
   namespace: argocd
 spec:
