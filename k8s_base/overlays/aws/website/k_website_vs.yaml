@@ -4,5 +4,5 @@ metadata:
   name: website
 spec:
   hosts:
-  - "nuts.frank5.link"
+  - "www.nuts.frank5.link"
 ---

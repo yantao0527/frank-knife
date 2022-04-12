@@ -356,7 +356,7 @@ spec:
   - http-gateway
   - https-gateway
   hosts:
-  - nuts.frank5.link
+  - www.nuts.frank5.link
   http:
   - route:
     - destination:
