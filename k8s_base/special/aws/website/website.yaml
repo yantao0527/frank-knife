@@ -153,7 +153,7 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - nuts.frank5.link
+    - www.nuts.frank5.link
     - leasing.nuts.frank5.link
     - argocd.nuts.frank5.link
     - kiali.nuts.frank5.link
@@ -175,7 +175,7 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - nuts.frank5.link
+    - www.nuts.frank5.link
     - leasing.nuts.frank5.link
     - argocd.nuts.frank5.link
     - kiali.nuts.frank5.link
