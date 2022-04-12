@@ -11,21 +11,21 @@ data:
         <h1>This is frank-knife deployed at AWS</h1>
         <h1>Projects</h1>
         <ul>
-          <li><a href="https://gitea.nuts.yantao0527.me">Gitea</a></li>
-          <li><a href="https://vault.nuts.yantao0527.me:8200">Vault</a></li>
-          <li><a href="https://www.nuts.yantao0527.me/jenkinsx.html">Jenkins X</a></li>
+          <li><a href="https://gitea.nuts.frank5.link">Gitea</a></li>
+          <li><a href="https://vault.nuts.frank5.link:8200">Vault</a></li>
+          <li><a href="https://www.nuts.frank5.link/jenkinsx.html">Jenkins X</a></li>
         </ul>
         <h1>Observabilities</h1>
         <ul>
-          <li><a href="https://kiali.nuts.yantao0527.me">Kiali</a></li>
-          <li><a href="https://prometheus.nuts.yantao0527.me">Prometheus</a></li>
-          <li><a href="https://grafana.nuts.yantao0527.me">Grafana</a></li>
-          <li><a href="https://tracing.nuts.yantao0527.me">Tracing</a></li>
+          <li><a href="https://kiali.nuts.frank5.link">Kiali</a></li>
+          <li><a href="https://prometheus.nuts.frank5.link">Prometheus</a></li>
+          <li><a href="https://grafana.nuts.frank5.link">Grafana</a></li>
+          <li><a href="https://tracing.nuts.frank5.link">Tracing</a></li>
         </ul>
         <h1>Tools</h1>
         <ul>
-          <li><a href="https://rancher.nuts.yantao0527.me:8443">Rancher</a></li>
-          <li><a href="https://argocd2.nuts.yantao0527.me">Argocd</a></li>
+          <li><a href="https://rancher.nuts.frank5.link:8443">Rancher</a></li>
+          <li><a href="https://argocd2.nuts.frank5.link">Argocd</a></li>
         </ul>
         <h1>Links</h1>
         <ul>
@@ -57,9 +57,9 @@ data:
         <h1>Jenkins X 3.x</h1>
         <h1>Link</h1>
         <ul>
-          <li><a href="http://dashboard-jx.nuts.yantao0527.me">Pipeline Visualizer</a></li>
-          <li><a href="http://bucketrepo-jx.nuts.yantao0527.me">Bucketrepo</a></li>
-          <li><a href="http://docker-registry-jx.nuts.yantao0527.me/v2/_catalog">Docker registry catalog</a></li>
+          <li><a href="http://dashboard-jx.nuts.frank5.link">Pipeline Visualizer</a></li>
+          <li><a href="http://bucketrepo-jx.nuts.frank5.link">Bucketrepo</a></li>
+          <li><a href="http://docker-registry-jx.nuts.frank5.link/v2/_catalog">Docker registry catalog</a></li>
         </ul>
       </body>
     </html>
