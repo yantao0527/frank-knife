@@ -326,7 +326,7 @@ spec:
   http:
   - route:
     - destination:
-        host: prometheus.istio-system.svc.cluster.local
+        host: prometheus-server.jx-observability.svc.cluster.local
         port:
           number: 9090
 ---
