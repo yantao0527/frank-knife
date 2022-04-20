@@ -160,6 +160,7 @@ spec:
     - prometheus.nuts.frank5.link
     - grafana.nuts.frank5.link
     - tracing.nuts.frank5.link
+    - gitea.nuts.frank5.link
     port:
       name: http2
       number: 80
@@ -182,6 +183,7 @@ spec:
     - prometheus.nuts.frank5.link
     - grafana.nuts.frank5.link
     - tracing.nuts.frank5.link
+    - gitea.nuts.frank5.link
     port:
       name: https-tls
       number: 443
@@ -247,7 +249,7 @@ spec:
   - http-gateway
   - https-gateway
   hosts:
-  - gitea.nuts.yantao0527.me
+  - gitea.nuts.frank5.link
   http:
   - route:
     - destination:

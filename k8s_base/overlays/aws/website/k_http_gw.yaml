@@ -16,4 +16,5 @@ spec:
     - prometheus.nuts.frank5.link
     - grafana.nuts.frank5.link
     - tracing.nuts.frank5.link
+    - gitea.nuts.frank5.link
 ---

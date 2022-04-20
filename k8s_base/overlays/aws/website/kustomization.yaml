@@ -19,3 +19,4 @@ patchesStrategicMerge:
 - k_addons_vs.yaml
 - k_argocd_vs.yaml
 - k_dashboard_vs.yaml
+- k_gitea_vs.yaml
