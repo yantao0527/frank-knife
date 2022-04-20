@@ -328,7 +328,7 @@ spec:
     - destination:
         host: prometheus-server.jx-observability.svc.cluster.local
         port:
-          number: 80
+          number: 9090
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
