@@ -193,12 +193,12 @@ gitea-base:
 	helmfile --file base/gitea/helmfile_gitea.yaml apply
 
 gitea-build:
-	rm -rf special/common/gitea
-	mkdir special/common/gitea
-	helmfile --file base/gitea/helmfile_gitea.yaml template --include-crds --output-dir-template $(PWD)/special/common
+	rm -rf special/${SPECIAL_TARGET}/gitea
+	mkdir special/${SPECIAL_TARGET}/gitea
+	helmfile --file base/gitea/helmfile_gitea.yaml template --include-crds --output-dir-template $(PWD)/special/${SPECIAL_TARGET}
 
 gitea-special:
-	kubectl -n git apply -f special/common/gitea
+	kubectl -n git apply -f special/${SPECIAL_TARGET}/gitea
 
 gitea-tls:
 	kubectl create secret tls tls-yantao0527 \

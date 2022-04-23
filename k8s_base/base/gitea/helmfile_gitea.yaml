@@ -7,4 +7,19 @@ releases:
   version: 2.2.2
   name: git
   values:
-  - gitea_values.yaml
+  - service:
+      http:
+        type: ClusterIP
+        port: 3000
+        clusterIP: 
+      ssh:
+        type: ClusterIP
+        port: 32022
+        clusterIP: 
+  - ingress:
+      enabled: false
+      hosts:
+        - gitea.nuts.{{ requiredEnv "KNIFE_DOMAIN" }}
+      tls:
+        - hosts:
+            - gitea.nuts.{{ requiredEnv "KNIFE_DOMAIN" }}

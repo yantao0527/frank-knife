@@ -22,7 +22,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 992cdaaaaf225486e9ceefd3901e911195210c9d2677944aab2afe2028b45c48
+        checksum/config: b47c882046cd51b58a0c30d091765ab8d9d0abb15be5e8dce161cf4af71b6fae
         checksum/ldap: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
         checksum/oauth: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
