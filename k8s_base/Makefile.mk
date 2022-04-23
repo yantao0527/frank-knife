@@ -1,12 +1,10 @@
 
-ISTIO_VERSION=1.10.0
+ISTIO_VERSION=1.13.3
 ISTIO_SPACE=istio-${ISTIO_VERSION}
 
 istio-download0:
 	cd ${HOME}/workspace && \
-	  curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIO_VERSION} TARGET_ARCH=x86_64 sh - && \
-	  cp ${ISTIO_SPACE}/bin/istioctl ${HOME}/bin
-
+	  curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIO_VERSION} TARGET_ARCH=x86_64 sh - 
 
 ISTIO_DOWNLOAD=https://dl-nuts.oss-cn-hangzhou.aliyuncs.com/istioctl-${ISTIO_VERSION}
 
