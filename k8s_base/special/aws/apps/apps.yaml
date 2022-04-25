@@ -74,6 +74,54 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: jx-git-operator
+  namespace: argocd
+spec:
+  destination:
+    namespace: jx-git-operator
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    directory:
+      recurse: true
+    path: k8s_base/special/aws/jx-git-operator
+    repoURL: https://github.com/yantao0527/frank-knife.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: observability
+  namespace: argocd
+spec:
+  destination:
+    namespace: jx-observability
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    directory:
+      recurse: true
+    path: k8s_base/special/aws/observability
+    repoURL: https://github.com/yantao0527/frank-knife.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  destination:
+    namespace: jx-vault
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    directory:
+      recurse: true
+    path: k8s_base/special/common/vault
+    repoURL: https://github.com/yantao0527/frank-knife.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: website
   namespace: argocd
 spec:

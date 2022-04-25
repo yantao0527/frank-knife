@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: observability
+  namespace: argocd
+spec:
+  destination:
+    namespace: jx-observability
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    directory:
+      recurse: true
+    path: k8s_base/special/nuts/observability
+    repoURL: https://github.com/yantao0527/frank-knife.git
+---

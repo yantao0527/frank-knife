@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jx-git-operator
+  namespace: argocd
+spec:
+  destination:
+    namespace: jx-git-operator
+    server: https://kubernetes.default.svc
+  project: nuts
+  source:
+    directory:
+      recurse: true
+    path: k8s_base/special/nuts/jx-git-operator
+    repoURL: https://github.com/yantao0527/frank-knife.git
+---

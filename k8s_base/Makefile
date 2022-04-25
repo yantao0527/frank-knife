@@ -60,9 +60,10 @@ argocd-apps-kustomize:
 argocd-apps-special:
 	kubectl -n argocd apply -f special/${SPECIAL_TARGET}/apps/apps.yaml
 	
-argocd-apps: website-pre website-tls gitea-pre argocd-apps-special \
-			 vault-argocd-app jx3-argocd-app observability-argocd-app
-
+argocd-apps: website-pre website-tls gitea-pre \
+             vault-pre jx3-pre observability-pre \
+             argocd-apps-special
+			 
 #== website ===
 
 website-pre:

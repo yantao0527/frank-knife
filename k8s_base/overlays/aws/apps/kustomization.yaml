@@ -3,4 +3,6 @@ bases:
 patchesStrategicMerge:
 - k_app_website.yaml
 - k_app_gitea.yaml
+- k_app_jx3.yaml
+- k_app_observability.yaml
 

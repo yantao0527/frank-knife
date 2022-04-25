@@ -6,3 +6,6 @@ resources:
 - repositories.yaml
 - app_website.yaml
 - app_gitea.yaml
+- app_vault.yaml
+- app_jx3.yaml
+- app_observability.yaml
