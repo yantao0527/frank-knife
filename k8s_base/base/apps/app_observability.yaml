@@ -11,6 +11,6 @@ spec:
   source:
     directory:
       recurse: true
-    path: k8s_base/special/nuts/observability
+    path: k8s_base/special/common/observability
     repoURL: https://github.com/yantao0527/frank-knife.git
 ---
