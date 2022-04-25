@@ -10,7 +10,7 @@ spec:
     server: https://kubernetes.default.svc
   project: nuts
   source:
-    path: k8s_base/special/aws/gitea
+    path: k8s_base/special/nuts/gitea
     directory:
       recurse: true
     repoURL: https://github.com/yantao0527/frank-knife.git

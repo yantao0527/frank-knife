@@ -2,4 +2,5 @@ bases:
 - ../../../base/apps
 patchesStrategicMerge:
 - k_app_website.yaml
+- k_app_gitea.yaml
 
