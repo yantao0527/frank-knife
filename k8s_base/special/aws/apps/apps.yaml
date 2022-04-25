@@ -68,7 +68,7 @@ spec:
   source:
     directory:
       recurse: true
-    path: k8s_base/special/common/gitea
+    path: k8s_base/special/aws/gitea
     repoURL: https://github.com/yantao0527/frank-knife.git
 ---
 apiVersion: argoproj.io/v1alpha1
