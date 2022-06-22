@@ -1,3 +1,4 @@
+TF_VERSION=1.1.7
 
 use-rsa:
 	-mkdir --mode=0700 $(HOME)/.ssh
@@ -66,8 +67,8 @@ install-jx: /usr/local/bin/jx
 	sudo chmod 0755 /usr/local/bin/jx
 
 install-terraform: /usr/local/bin/terraform
-	wget --output-document=/tmp/terraform_0.14.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.14.7/terraform_0.14.7_linux_amd64.zip
-	cd /tmp && unzip terraform_0.14.7_linux_amd64.zip
+	wget --output-document=/tmp/terraform_${TF_VERSION}_linux_amd64.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+	cd /tmp && unzip terraform_${TF_VERSION}_linux_amd64.zip
 	sudo mv /tmp/terraform /usr/local/bin/terraform
 
 install-tkn:
@@ -77,7 +78,11 @@ install-tkn:
 install-jq:
 	sudo apt-get install jq
 
-install-aws:
+install-awscli:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
 	cd /tmp; unzip awscliv2.zip
 	sudo /tmp/aws/install
+
+install-azurecli:
+	curl -sL https://aka.ms/InstallAzureCLIDeb -o "/tmp/InstallAzureCLI"
+	#sudo bash /tmp/InstallAzureCLI

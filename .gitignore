@@ -1,3 +1,5 @@
+.vscode/*.log
+
 v2ray/.terraform/
 v2ray/terraform.tfstate*
 v2ray/remote.sh

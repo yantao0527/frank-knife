@@ -1,6 +1,7 @@
 
 init-infra:
 	cd ../ansible && ansible-playbook init_infra.yml
+	if [ ! -d $(HOME)/.kube ]; then mkdir $(HOME)/.kube; fi
 
 check-access:
 ifndef AWS_ACCESS_KEY
@@ -22,7 +23,8 @@ ifneq ($(shell test -e $(HOME)/.ssh/id_rsa.pub && echo -n yes), yes)
 	$(error Please setup $(HOME)/.ssh/id_rsa.pub)
 endif
 
-check: check-id_rsa check-id_rsa-pub check-access check-secret
+#check: check-id_rsa check-id_rsa-pub check-access check-secret
+check: check-access check-secret
 	@echo Validate environment
 	terraform version
 	ansible-playbook --version
@@ -113,7 +115,7 @@ playbook:
         ../ansible/setup.yml
 
 remote-rm:
-	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
+	ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R $(shell terraform output node_eip)
 
 remote-root:
 	ssh -i ./id_rsa $(ROOT_NAME)@$(shell terraform output -raw node_eip)
@@ -122,7 +124,7 @@ remote:
 	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)
 
 k8s-create:
-	ssh-keygen -f "/home/frank/.ssh/known_hosts" -R $(shell terraform output node_eip)
+	ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R $(shell terraform output node_eip)
 	ssh -i ./id_rsa -o StrictHostKeyChecking=no trial@$(shell make node-eip) \
 	    "cd workspace/frank-knife/infra_tf/k8s;  make one-click0 "
 

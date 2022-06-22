@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-    alicloud = {
+    aws = {
       source  = "hashicorp/aws"
       version = "4.8.0"
     }
