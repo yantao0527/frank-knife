@@ -1,0 +1,47 @@
+---
+- name: install dependencies package
+  yum:
+    name:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+
+# - name: Enable Docker Edge repo
+#   ini_file:
+#     dest: /etc/yum.repos.d/docer-ce.repo
+#     section: 'docker-ce-edge'
+#     option: enabled
+#     value: 0
+
+- name: Install Docker
+  package:
+    name: docker-ce
+    state: latest
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user trial to docker group
+  user:
+    name: trial
+    groups: docker
+    append: yes
+
+- name: install docker SDK dependencies package
+  yum:
+    name:
+    - python3
+  when: infra_type == 'aws_ec2.redhat84'
+
+- name: installing docker SDK
+  pip:
+    name: docker
