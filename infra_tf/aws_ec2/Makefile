@@ -1,3 +1,5 @@
+KNIFE_VARS=redhat.tfvars
+#KNIFE_VARS=ubuntu.tfvars
 
 init-infra:
 	cd ../ansible && ansible-playbook init_infra.yml
@@ -32,19 +34,23 @@ validate:
 
 plan: check-domain
 	terraform plan \
+	  --var-file=${KNIFE_VARS} \
 	  --var knife_domain=${KNIFE_DOMAIN}
 
 create: check-domain
 	@echo Create terraform resource
 	terraform apply -auto-approve \
+	  --var-file=${KNIFE_VARS} \
 	  --var knife_domain=${KNIFE_DOMAIN}
 
 vm-start: check-access check-secret
 	terraform apply -auto-approve \
+	  --var-file=${KNIFE_VARS} \
 	  --var knife_domain=${KNIFE_DOMAIN}
 
 vm-stop: check-access check-secret
 	terraform apply -auto-approve \
+	  --var-file=${KNIFE_VARS} \
 	  --var knife_domain=${KNIFE_DOMAIN} \
 	  --var compute_status=Stopped
 
@@ -58,6 +64,7 @@ state-rm-eip:
 destroy: check-domain
 	@echo Destroy terraform resource
 	terraform destroy -auto-approve \
+	  --var-file=${KNIFE_VARS} \
 	  --var knife_domain=${KNIFE_DOMAIN} \
 	  --var compute_status=Stopped
 

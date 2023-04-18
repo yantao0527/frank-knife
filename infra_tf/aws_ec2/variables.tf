@@ -54,21 +54,13 @@ variable "instance_type" {
 variable "os_image" {
   type        = string
   description = "Operation System image identification mark"
-  # default     = "ami-0a695f0d95cefc163"  # Ubuntu Server 22.04 LTS (HVM), SSD Volume Type
-  # default     = "ami-0996d1ddefe09ff57"  # Deep Learning AMI GPU PyTorch 2.0.0 (Ubuntu 20.04) 20230401
-  default     = "ami-0ba62214afa52bec7"  # REDHAT 8.4
 }
 
 variable "os_type" {
   type        = string
   description = "OS type provided to ansible playbook"
-  # default     = "aws_ec2.ubuntu_22.04"
-  # default     = "aws_ec2.ubuntu_20.04"
-  default     = "aws_ec2.redhat84"
 }
 variable "os_username" {
   type        = string
   description = "Username initiated in os image"
-  # default     = "ubuntu"    # Ubuntu
-  default     = "ec2-user"  # Redhat
 }
