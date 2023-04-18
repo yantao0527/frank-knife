@@ -35,3 +35,13 @@ k8s_base/vault_ca.crt
 seeker/secret/cluster_keys.json
 seeker/secret/vault_ca.crt
 seeker/secret/output/
+
+seeker/chatgpt/.terraform/
+seeker/chatgpt/terraform.tfstate*
+seeker/chatgpt/terraform.tfvars
+seeker/chatgpt/id_rsa
+seeker/chatgpt/id_rsa.pub
+seeker/chatgpt/remote.sh
+seeker/chatgpt/playbook.sh
+seeker/chatgpt/ansible/roles/trial/files/id_rsa
+seeker/chatgpt/ansible/roles/trial/files/id_rsa.pub
