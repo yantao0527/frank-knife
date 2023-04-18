@@ -1,14 +1,3 @@
-# - name: "Create user accounts and add users to groups"
-#   user:
-#     name: "trial"
-#     groups: "wheel,docker"
-
-# - name: "Add authorized keys"
-#   authorized_key:
-#     user: "trial"
-#     key: "{{ item }}"
-#   with_file:
-#     - files/authorized_keys
 
 - name: "Keep client alive"
   lineinfile: dest='{{ sshdconfig }}' regexp='^#?ClientAliveInterval' line='ClientAliveInterval 60'
@@ -37,6 +26,24 @@
   yum:
     name: ['make', 'git', 'tree']
     state: present
+  when: infra_type == 'ali_ecs.centos82' or infra_type == 'aws_ec2.redhat84'
+
+- name: "Install required package"
+  ansible.builtin.apt:
+    pkg:
+    - acl
+    - make
+    - python3-pip
+    update_cache: true
+    state: present
+  when: infra_type == 'aws_ec2.ubuntu_22.04'
+
+- name: "Install pip3 latest"
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+  when: infra_type == 'aws_ec2.ubuntu_22.04'
 
 # - name: install ansible
 #   pip:
@@ -48,6 +55,21 @@
   user:
     name: trial
     groups: "wheel"
+  when: infra_type == 'ali_ecs.centos82' or infra_type == 'aws_ec2.redhat84'
+
+- name: "Create user accounts and add users to groups"
+  user:
+    name: trial
+    groups: sudo
+    shell: /bin/bash
+    state: present
+  when: infra_type == 'aws_ec2.ubuntu_22.04'
+
+- name: "Change user password"
+  user:
+    name: "{{ username }}"
+    state: present
+    password: "{{ password | password_hash('sha512') }}"
 
 - name: "Add authorized keys"
   authorized_key:
@@ -71,13 +93,13 @@
     git_config:
       name: user.name
       scope: global
-      value: trial
+      value: frank
   
   - name: config git user email
     git_config:
       name: user.email
       scope: global
-      value: yantao0527@aliyun.com
+      value: yantao0527@gmail.com
   
   - name: config push.default simple
     git_config:

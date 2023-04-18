@@ -4,7 +4,7 @@ DOMAIN=nuts.$(KNIFE_DOMAIN)
 
 include Makefile.mk
 
-## 快速搭建平台
+## Quickly setup platform
 
 platform: istio argocd argocd-wait argocd-post argocd-apps
 

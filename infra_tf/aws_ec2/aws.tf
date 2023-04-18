@@ -49,12 +49,12 @@ resource "aws_key_pair" "key_pair" {
 }
 
 resource "aws_instance" "compute" {
-  ami           = "ami-0ba62214afa52bec7"  # REDHAT 8.4
-  instance_type = "t2.large"
+  ami           = var.os_image
+  instance_type = var.instance_type
 
   root_block_device {
     delete_on_termination = true
-    volume_size = 40
+    volume_size = 50
     volume_type = "gp2"
   }
 
@@ -64,6 +64,10 @@ resource "aws_instance" "compute" {
   subnet_id  = aws_subnet.subnet.id
 
   vpc_security_group_ids = [aws_security_group.group.id]
+
+  # metadata_options {
+  #   http_endpoint = "disabled"
+  # }
 
   tags = {
     Name = "${var.prefix}-instance"
@@ -103,7 +107,7 @@ resource "null_resource" "playbook" {
       type        = "ssh"
       agent       = false
       host        = aws_eip.eip.public_ip
-      user        = "ec2-user"
+      user        = var.os_username
       private_key = tls_private_key.global_key.private_key_pem
     }
   }
@@ -117,7 +121,7 @@ resource "null_resource" "playbook" {
 locals {
 
   cmd_remote = <<EOT
-#      ssh -i ${path.module}/id_rsa ec2-user@${aws_eip.eip.public_ip}
+#      ssh -i ${path.module}/id_rsa ${var.os_username}@${aws_eip.eip.public_ip}
       ssh -i ${path.module}/id_rsa trial@${aws_eip.eip.public_ip}
   EOT
 
@@ -126,10 +130,9 @@ locals {
   cmd_playbook = <<EOT
       ansible-playbook \
         -i '${aws_eip.eip.public_ip},' \
-        -u ec2-user \
+        -u ${var.os_username} \
         --private-key ${path.module}/id_rsa \
-		    --extra-vars infra_type=aws_ec2.redhat84 \
-        --extra-vars docker_version=${var.docker_version} \
+        --extra-vars infra_type=${var.os_type} \
         ../ansible/setup.yml
   EOT  
 }

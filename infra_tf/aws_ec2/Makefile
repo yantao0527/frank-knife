@@ -3,14 +3,9 @@ init-infra:
 	cd ../ansible && ansible-playbook init_infra.yml
 	if [ ! -d $(HOME)/.kube ]; then mkdir $(HOME)/.kube; fi
 
-check-access:
-ifndef AWS_ACCESS_KEY
-	$(error Please run source ../base/env.sh or setup env AWS_ACCESS_KEY)
-endif
-
-check-secret:
-ifndef AWS_SECRET_KEY
-	$(error Please run source ../base/env.sh or setup env AWS_SECRET_KEY)
+check-domain:
+ifndef KNIFE_DOMAIN
+	$(error Please load or setup env KNIFE_DOMAIN)
 endif
 
 check-id_rsa:
@@ -24,7 +19,7 @@ ifneq ($(shell test -e $(HOME)/.ssh/id_rsa.pub && echo -n yes), yes)
 endif
 
 #check: check-id_rsa check-id_rsa-pub check-access check-secret
-check: check-access check-secret
+check: check-domain
 	@echo Validate environment
 	terraform version
 	ansible-playbook --version
@@ -35,26 +30,22 @@ init:
 validate:
 	terraform validate
 
-plan: check-access check-secret
+plan: check-domain
 	terraform plan \
-	  --var access_key=$(AWS_ACCESS_KEY) \
-	  --var secret_key=$(AWS_SECRET_KEY)
+	  --var knife_domain=${KNIFE_DOMAIN}
 
-create: check-access check-secret
+create: check-domain
 	@echo Create terraform resource
 	terraform apply -auto-approve \
-	  --var access_key=$(AWS_ACCESS_KEY) \
-	  --var secret_key=$(AWS_SECRET_KEY)
+	  --var knife_domain=${KNIFE_DOMAIN}
 
 vm-start: check-access check-secret
 	terraform apply -auto-approve \
-	  --var access_key=$(AWS_ACCESS_KEY) \
-	  --var secret_key=$(AWS_SECRET_KEY)
+	  --var knife_domain=${KNIFE_DOMAIN}
 
 vm-stop: check-access check-secret
 	terraform apply -auto-approve \
-	  --var access_key=$(AWS_ACCESS_KEY) \
-	  --var secret_key=$(AWS_SECRET_KEY) \
+	  --var knife_domain=${KNIFE_DOMAIN} \
 	  --var compute_status=Stopped
 
 state-list:
@@ -64,11 +55,10 @@ state-rm-eip:
 	terraform state rm AWS_eip_association.eip_asso
 	terraform state rm AWS_eip.eip
 
-destroy:
+destroy: check-domain
 	@echo Destroy terraform resource
 	terraform destroy -auto-approve \
-	  --var access_key=$(AWS_ACCESS_KEY) \
-	  --var secret_key=$(AWS_SECRET_KEY) \
+	  --var knife_domain=${KNIFE_DOMAIN} \
 	  --var compute_status=Stopped
 
 clean:
@@ -102,23 +92,15 @@ kubeconfig-dns:
 	@echo "Please setup DNS resolve, or add item in /etc/hosts: "
 	@echo "$(shell make node-eip)    nuts.$(KNIFE_DOMAIN)"
 
-#ROOT_NAME=root
-ROOT_NAME=ec2-user
-
 playbook:
-	ansible-playbook \
-        -i '$(shell terraform output -raw node_eip),' \
-        -u $(ROOT_NAME) \
-        --private-key ./id_rsa \
-		--extra-vars infra_type=aws_ec2.redhat84 \
-        --extra-vars docker_version=19.03 \
-        ../ansible/setup.yml
+	cat playbook.sh
+	./playbook.sh
 
 remote-rm:
 	ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R $(shell terraform output node_eip)
 
 remote-root:
-	ssh -i ./id_rsa $(ROOT_NAME)@$(shell terraform output -raw node_eip)
+	ssh -i ./id_rsa $(shell terraform output -raw os_username)@$(shell terraform output -raw node_eip)
 
 remote:
 	ssh -i ./id_rsa trial@$(shell terraform output -raw node_eip)

@@ -70,6 +70,14 @@ resource "aws_security_group" "group" {
     }
 
     ingress {
+        from_port = 7860
+        to_port = 7860
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+        description = "fastchat"
+    }
+
+    ingress {
         from_port = 8080
         to_port = 8080
         protocol = "tcp"

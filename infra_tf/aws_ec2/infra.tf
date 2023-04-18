@@ -28,11 +28,11 @@ resource "local_file" "ssh_public_key_openssh2" {
   file_permission = "0666"
 }
 
-resource "local_file" "cmd_remote" {
-  filename        = "${path.module}/remote.sh"
-  content         = local.cmd_remote
-  file_permission = "0755"
-}
+# resource "local_file" "cmd_remote" {
+#   filename        = "${path.module}/remote.sh"
+#   content         = local.cmd_remote
+#   file_permission = "0755"
+# }
 
 resource "local_file" "cmd_playbook" {
   filename        = "${path.module}/playbook.sh"
