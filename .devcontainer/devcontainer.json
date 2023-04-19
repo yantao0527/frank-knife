@@ -18,7 +18,7 @@
 	"remoteUser": "vscode",
 	"features": {
 		"kubectl-helm-minikube": "1.22",
-		"terraform": "1.1",
+		"terraform": "1.4",
 		"aws-cli": "latest"
 	},
 	"customizations": {

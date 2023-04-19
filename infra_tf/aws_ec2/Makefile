@@ -1,5 +1,5 @@
-KNIFE_VARS=redhat.tfvars
-#KNIFE_VARS=ubuntu.tfvars
+#KNIFE_VARS=redhat.tfvars
+KNIFE_VARS=ubuntu.tfvars
 
 init-infra:
 	cd ../ansible && ansible-playbook init_infra.yml
@@ -60,6 +60,9 @@ state-list:
 state-rm-eip:
 	terraform state rm AWS_eip_association.eip_asso
 	terraform state rm AWS_eip.eip
+
+state-rm-playbook:
+	terraform state rm null_resource.playbook
 
 destroy: check-domain
 	@echo Destroy terraform resource

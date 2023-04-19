@@ -47,8 +47,6 @@ variable "prefix" {
 variable "instance_type" {
   type        = string
   description = "EC2 instance type"
-  # default     = "t2.2xlarge"  # T2 family, 32G
-  default     = "t2.large"    # T2 family, 8G
 }
 
 variable "os_image" {

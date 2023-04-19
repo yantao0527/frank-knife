@@ -100,16 +100,16 @@ resource "aws_route53_record" "nuts_wild" {
 resource "null_resource" "playbook" {
   depends_on                = [aws_instance.compute, aws_eip.eip]
 
+  connection {
+    type        = "ssh"
+    agent       = false
+    host        = aws_eip.eip.public_ip
+    user        = var.os_username
+    private_key = tls_private_key.global_key.private_key_pem
+  }
+
   provisioner "remote-exec" {
     inline = ["echo 'Waiting for server to be initialized...'"]
-
-    connection {
-      type        = "ssh"
-      agent       = false
-      host        = aws_eip.eip.public_ip
-      user        = var.os_username
-      private_key = tls_private_key.global_key.private_key_pem
-    }
   }
 
   provisioner "local-exec" {
