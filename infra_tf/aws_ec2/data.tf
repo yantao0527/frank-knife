@@ -1,31 +1,31 @@
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners = ["099720109477"] # Canonical
+  owners      = ["099720109477"] # Canonical
 
   filter {
-      name   = "name"
-      values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
   }
 
   filter {
-      name   = "virtualization-type"
-      values = ["hvm"]
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
 
 data "aws_ami" "redhat" {
   most_recent = true
-  owners = ["309956199498"] # Provided by Red Hat, Inc.
+  owners      = ["309956199498"] # Provided by Red Hat, Inc.
 
   filter {
-      name   = "name"
-      values = ["RHEL-8.4*"]
+    name   = "name"
+    values = ["RHEL-8.4*"]
   }
 
   filter {
-      name   = "virtualization-type"
-      values = ["hvm"]
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
 
@@ -52,4 +52,13 @@ data "aws_ami" "redhat" {
 data "aws_route53_zone" "dns" {
   name         = "${var.knife_domain}."
   private_zone = false
+}
+
+data "aws_ebs_volume" "llama" {
+  most_recent = true
+
+  filter {
+    name   = "data"
+    values = ["llama"]
+  }
 }

@@ -26,21 +26,21 @@ resource "aws_subnet" "subnet" {
   }
 }
 resource "aws_route_table" "crt" {
-    vpc_id = aws_vpc.default.id
-    route {
-        cidr_block = "0.0.0.0/0" //associated subnet can reach everywhere
-        gateway_id = aws_internet_gateway.gw.id //CRT uses this IGW to reach internet
-    }
+  vpc_id = aws_vpc.default.id
+  route {
+    cidr_block = "0.0.0.0/0"                //associated subnet can reach everywhere
+    gateway_id = aws_internet_gateway.gw.id //CRT uses this IGW to reach internet
+  }
 
-    tags = {
-        Name = "${var.prefix}-crt"
-    }
+  tags = {
+    Name = "${var.prefix}-crt"
+  }
 }
 
 # route table association for the public subnets
 resource "aws_route_table_association" "crta" {
-    subnet_id = aws_subnet.subnet.id
-    route_table_id = aws_route_table.crt.id
+  subnet_id      = aws_subnet.subnet.id
+  route_table_id = aws_route_table.crt.id
 }
 
 resource "aws_key_pair" "key_pair" {
@@ -54,8 +54,8 @@ resource "aws_instance" "compute" {
 
   root_block_device {
     delete_on_termination = true
-    volume_size = 50
-    volume_type = "gp2"
+    volume_size           = 50
+    volume_type           = "gp2"
   }
 
   key_name = aws_key_pair.key_pair.key_name
@@ -72,6 +72,12 @@ resource "aws_instance" "compute" {
   tags = {
     Name = "${var.prefix}-instance"
   }
+}
+
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/xvdf"
+  volume_id   = data.aws_ebs_volume.llama.id
+  instance_id = aws_instance.compute.id
 }
 
 resource "aws_eip" "eip" {
@@ -98,7 +104,7 @@ resource "aws_route53_record" "nuts_wild" {
 }
 
 resource "null_resource" "playbook" {
-  depends_on                = [aws_instance.compute, aws_eip.eip]
+  depends_on = [aws_instance.compute, aws_eip.eip]
 
   connection {
     type        = "ssh"
