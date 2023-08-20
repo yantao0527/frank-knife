@@ -35,5 +35,8 @@ terraform.rc
 
 .idea/
 
+# infracost directories
+**/.infracost/*
+
 .terraform.lock.hcl
 frank.env
