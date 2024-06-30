@@ -1,4 +1,4 @@
-TF_VERSION=1.1.7
+TF_VERSION=1.5.5
 
 use-rsa:
 	-mkdir --mode=0700 $(HOME)/.ssh

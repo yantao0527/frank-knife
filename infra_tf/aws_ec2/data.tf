@@ -58,7 +58,7 @@ data "aws_ebs_volume" "llama" {
   most_recent = true
 
   filter {
-    name   = "data"
+    name   = "tag:data"
     values = ["llama"]
   }
 }
