@@ -5,6 +5,8 @@ v2ray/terraform.tfstate*
 v2ray/remote.sh
 v2ray/playbook.sh
 
+v2ray_us-east
+
 acme/out
 acme/out_*
 acme/*.sh
